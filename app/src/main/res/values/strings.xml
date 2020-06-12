@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name" translatable="false">Pizza Dough</string>
+    <string name="title" translatable="false">PIZZA DOUGH</string>
+    <string name="portions">Portions</string>
+    <string name="portion_weight">Portion Weight (grams)</string>
+    <string name="hydration">Hydration</string>
+    <string name="zero_decimal" translatable="false">0.0</string>
+    <string name="zero_percentage" translatable="false">0.0%</string>
+    <string name="grams">grams</string>
+    <string name="flour">Flour (grams)</string>
+    <string name="water">Water (grams)</string>
+    <string name="yeast">Yeast</string>
+    <string name="yeast_grams">Yeast (grams)</string>
+    <string name="salt">Salt</string>
+    <string name="salt_grams">Salt (grams)</string>
+    <string name="oil">Oil</string>
+    <string name="oil_grams">Oil (grams)</string>
+    <string name="calculate">CALCULATE</string>
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-1453187186238733/4044270455</string>
+    <string name="toast_hydration_warning">Hydration must be greater than 0 and less than 100</string>
+    <string name="toast_hydration_is">Hydration is : %d%%</string>
+    <string name="toast_yeast_is">Yeast is : %.1f%%</string>
+    <string name="toast_salt_is">Salt is : %.1f%%</string>
+    <string name="toast_oil_is">Oil is : %.1f%%</string>
+</resources>

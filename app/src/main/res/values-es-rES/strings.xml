@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="grams">gramos</string>
+    <string name="flour">Harina (gr)</string>
+    <string name="water">Agua (gr)</string>
+    <string name="yeast">Levadura</string>
+    <string name="salt">Sal</string>
+    <string name="oil">Aceite</string>
+    <string name="calculate">CALCULA</string>
+    <string name="portions">Porciones</string>
+    <string name="portion_weight">Peso porción (gr)</string>
+    <string name="hydration">Hidratación</string>
+    <string name="yeast_grams">Levadura (gr)</string>
+    <string name="salt_grams">Sal (gr)</string>
+    <string name="oil_grams">Aceite (gr)</string>
+    <string name="toast_hydration_is">Hidratación al : %d%%</string>
+    <string name="toast_yeast_is">Levadura al : %.1f%%</string>
+    <string name="toast_salt_is">Sal al : %.1f%%</string>
+    <string name="toast_oil_is">Aceite al : %.1f%%</string>
+    <string name="toast_hydration_warning">La hidratación tiene que ser mayor que 0 y menor que 100</string>
+</resources>
