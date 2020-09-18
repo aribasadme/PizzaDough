@@ -4,48 +4,63 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity {
-    private final float yeast_percent = 2.5f;
-    private final float salt_percent = 2.0f;
-    private final float oil_percent = 2.5f;
-    private int hydration, yeastSB, saltSB, oilSB;
-
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private AdView mAdView;
-
+    private DrawerLayout drawer;
     private Button calcButton;
 
     private EditText editPortions, editWeightPortion;
-    private EditText editFlour;
-    private EditText editWater;
-    private EditText editYeast;
-    private EditText editSalt;
-    private EditText editOil;
+    private EditText editFlour, editWater, editYeast, editSalt, editOil;
 
     private TextView hydrationPercentTextView, yeastPercentTextView, saltPercentTextView, oilPercentTextView;
 
     private SeekBar hydrationSeekBar, yeastSeekBar, saltSeekBar, oilSeekBar;
 
+    private int hydration = 65, yeastSB = 20, saltSB = 25, oilSB = 30;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_draw_open, R.string.navigation_draw_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
         // Initialize the Mobile Ads SDK.
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
@@ -97,18 +112,21 @@ public class MainActivity extends AppCompatActivity {
         editOil.setEnabled(false);
         editOil.setInputType(InputType.TYPE_NULL);
 
-        // Hydration seek bar change listener
+        /* HYDRATION SEEK BAR */
+        // Sets default
+        hydrationSeekBar.setProgress(hydration);
+        hydrationPercentTextView.setText(String.format(Locale.getDefault(), "%d%%", hydration));
+        // Sets change listener
         hydrationSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                hydration = i;
-                hydrationPercentTextView.setText(String.format("%d%%", i));
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                hydration = progress;
+                hydrationPercentTextView.setText(String.format(Locale.getDefault(), "%d%%", progress));
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                hydration = 0;
             }
 
             @Override
@@ -119,18 +137,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Yeast seek bar change listener
+        /* YEAST SEEK BAR */
+        // Sets default
+        yeastSeekBar.setProgress(yeastSB);
+        yeastPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(yeastSB)));
+        // Sets change listener
         yeastSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                yeastSB = i;
-                yeastPercentTextView.setText(String.format("%.1f%%", getConvertedValue(i)));
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                yeastSB = progress;
+                yeastPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(progress)));
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                yeastSB = 0;
             }
 
             @Override
@@ -141,18 +162,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Salt seek bar change listener
+        /* SALT SEEK BAR */
+        // Sets default
+        saltSeekBar.setProgress(saltSB);
+        saltPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(saltSB)));
+        // Sets change listener
         saltSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                saltSB = i;
-                saltPercentTextView.setText(String.format("%.1f%%", getConvertedValue(i)));
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                saltSB = progress;
+                saltPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(progress)));
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                saltSB = 0;
             }
 
             @Override
@@ -163,18 +187,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Oil seek bar change listener
+        /* OIL SEEK BAR */
+        // Sets default
+        oilSeekBar.setProgress(oilSB);
+        oilPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(oilSB)));
+        // Sets change listener
         oilSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                oilSB = i;
-                oilPercentTextView.setText(String.format("%.1f%%", getConvertedValue(i)));
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                oilSB = progress;
+                oilPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(progress)));
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                oilSB = 0;
             }
 
             @Override
@@ -227,6 +254,45 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Helper function to convert value from int to float
+    public float getConvertedValue(int intVal){
+        float floatVal;
+        floatVal = .1f * intVal;
+        return floatVal;
+    }
+    // Helper function to create the recipe
+    public StringBuilder writeRecipe (){
+        StringBuilder sbuf = new StringBuilder();
+
+        sbuf.append(getResources().getText(R.string.portions)).append(": ");
+        sbuf.append(editPortions.getText()).append(System.getProperty("line.separator"));
+        sbuf.append(getResources().getText(R.string.portion_weight)).append(": ");
+        sbuf.append(editWeightPortion.getText()).append(System.getProperty("line.separator"));
+        sbuf.append(getResources().getText(R.string.hydration)).append(": ");
+        sbuf.append(hydration).append('%').append(System.getProperty("line.separator"));
+        sbuf.append(getResources().getText(R.string.flour)).append(": ");
+        sbuf.append(editFlour.getText()).append(System.getProperty("line.separator"));
+        sbuf.append(getResources().getText(R.string.water)).append(": ");
+        sbuf.append(editWater.getText()).append(System.getProperty("line.separator"));
+        sbuf.append(getResources().getText(R.string.yeast_grams)).append(": ");
+        sbuf.append(editYeast.getText()).append(System.getProperty("line.separator"));
+        sbuf.append(getResources().getText(R.string.salt_grams)).append(": ");
+        sbuf.append(editSalt.getText()).append(System.getProperty("line.separator"));
+        sbuf.append(getResources().getText(R.string.oil_grams)).append(": ");
+        sbuf.append(editOil.getText());
+
+        return sbuf;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     /** Called when leaving the activity */
     @Override
     public void onPause() {
@@ -254,10 +320,32 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    // Helper function to convert value from int to float
-    public float getConvertedValue(int intVal){
-        float floatVal;
-        floatVal = .1f * intVal;
-        return floatVal;
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_settings:
+                Toast.makeText(this, R.string.settings, Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_share:
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT,"https://play.google.com/store/apps/details?id=net.ddns.aribas.pizzadough");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getText(R.string.app_name));
+                shareIntent.setType("text/plain");
+                startActivity(Intent.createChooser(shareIntent, "Share app"));
+                Toast.makeText(this, R.string.share, Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_send:
+                Intent sendIntent = new Intent();
+                StringBuilder message = writeRecipe();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
+                sendIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sendIntent, null));
+                Toast.makeText(this, R.string.send, Toast.LENGTH_SHORT).show();
+                break;
+        }
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

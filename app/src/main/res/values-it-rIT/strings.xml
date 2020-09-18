@@ -7,8 +7,8 @@
     <string name="salt">Sale</string>
     <string name="oil">Olio</string>
     <string name="calculate">CALCOLA</string>
-    <string name="portions">Porzioni</string>
-    <string name="portion_weight">Peso porzione (gr)</string>
+    <string name="portions">Numero panetti</string>
+    <string name="portion_weight">Peso panetto (gr)</string>
     <string name="hydration">Idratazione</string>
     <string name="yeast_grams">Lievito (gr)</string>
     <string name="salt_grams">Sale (gr)</string>
@@ -18,4 +18,8 @@
     <string name="toast_salt_is">Sale al : %.1f%%</string>
     <string name="toast_oil_is">Olio al : %.1f%%</string>
     <string name="toast_hydration_warning">L\'idratazione deve essere maggiore di 0 e minore di 100</string>
+    <string name="settings">Ajustes</string>
+    <string name="share">Compartir</string>
+    <string name="send">Enviar</string>
+    <string name="communicate">Communicazione</string>
 </resources>
