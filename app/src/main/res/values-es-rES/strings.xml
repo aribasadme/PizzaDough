@@ -18,8 +18,8 @@
     <string name="toast_salt_is">Sal al : %.1f%%</string>
     <string name="toast_oil_is">Aceite al : %.1f%%</string>
     <string name="toast_hydration_warning">La hidratación tiene que ser mayor que 0 y menor que 100</string>
-    <string name="settings">Impostazioni</string>
-    <string name="share">Condividi</string>
-    <string name="send">Invia</string>
+    <string name="settings">Ajustes</string>
+    <string name="share">Compartir</string>
+    <string name="send">Enviar</string>
     <string name="communicate">Comunicación</string>
 </resources>

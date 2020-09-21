@@ -26,6 +26,11 @@ import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.tasks.OnCompleteListener;
+import com.google.android.play.core.tasks.Task;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -33,15 +38,14 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private AdView mAdView;
-    private DrawerLayout drawer;
     private Button calcButton;
-
+    private DrawerLayout drawer;
     private EditText editPortions, editWeightPortion;
     private EditText editFlour, editWater, editYeast, editSalt, editOil;
-
-    private TextView hydrationPercentTextView, yeastPercentTextView, saltPercentTextView, oilPercentTextView;
-
+    private ReviewManager manager;
+    //private ReviewInfo reviewInfo;
     private SeekBar hydrationSeekBar, yeastSeekBar, saltSeekBar, oilSeekBar;
+    private TextView hydrationPercentTextView, yeastPercentTextView, saltPercentTextView, oilPercentTextView;
 
     private int hydration = 65, yeastSB = 20, saltSB = 25, oilSB = 30;
 
@@ -101,16 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         oilPercentTextView = findViewById(R.id.oilPercentTextView);
 
         // Disabling Inputs
-        editFlour.setEnabled(false);
-        editFlour.setInputType(InputType.TYPE_NULL);
-        editWater.setEnabled(false);
-        editWater.setInputType(InputType.TYPE_NULL);
-        editYeast.setEnabled(false);
-        editYeast.setInputType(InputType.TYPE_NULL);
-        editSalt.setEnabled(false);
-        editSalt.setInputType(InputType.TYPE_NULL);
-        editOil.setEnabled(false);
-        editOil.setInputType(InputType.TYPE_NULL);
+        disableInputs();
 
         /* HYDRATION SEEK BAR */
         // Sets default
@@ -261,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return floatVal;
     }
     // Helper function to create the recipe
-    public StringBuilder writeRecipe (){
+    public StringBuilder writeRecipe(){
         StringBuilder sbuf = new StringBuilder();
 
         sbuf.append(getResources().getText(R.string.portions)).append(": ");
@@ -283,12 +278,56 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return sbuf;
     }
+    // Helper function to disable inputs
+    public void disableInputs(){
+        editFlour.setEnabled(false);
+        editFlour.setInputType(InputType.TYPE_NULL);
+        editWater.setEnabled(false);
+        editWater.setInputType(InputType.TYPE_NULL);
+        editYeast.setEnabled(false);
+        editYeast.setInputType(InputType.TYPE_NULL);
+        editSalt.setEnabled(false);
+        editSalt.setInputType(InputType.TYPE_NULL);
+        editOil.setEnabled(false);
+        editOil.setInputType(InputType.TYPE_NULL);
+    }
+    // Helper function to call In App Rating
+    public void launchInAppRating(){
+        // Replace FakeReviewManager for testing
+        manager = ReviewManagerFactory.create(MainActivity.this);
+        Task<ReviewInfo> request = manager.requestReviewFlow();
+        request.addOnCompleteListener(new OnCompleteListener<ReviewInfo>() {
+            @Override
+            public void onComplete(@NonNull Task<ReviewInfo> task) {
+                if (task.isSuccessful()) {
+                    // We can get the ReviewInfo object
+                    ReviewInfo reviewInfo = task.getResult();
+                    Task<Void> flow = manager.launchReviewFlow(MainActivity.this, reviewInfo);
+                    flow.addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            // The flow has finished. The API does not indicate whether the user
+                            // reviewed or not, or even whether the review dialog was shown. Thus, no
+                            // matter the result, we continue our app flow.
+                            if (task.isSuccessful()){
+                                Toast.makeText(MainActivity.this, "In App Rating complete", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                } else {
+                    // There was some problem, continue regardless of the result.
+                    Toast.makeText(MainActivity.this, "In App Rating failure: requestReviewFlow", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)){
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            launchInAppRating();
             super.onBackPressed();
         }
     }
