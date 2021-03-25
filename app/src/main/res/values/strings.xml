@@ -6,6 +6,7 @@
     <string name="portions">Dough balls</string>
     <string name="portion_weight">Dough Ball Weight (grams)</string>
     <string name="hydration">Hydration</string>
+    <string name="initial_wight_portion" translatable="false">280</string>
     <string name="zero_num" translatable="false">0</string>
     <string name="zero_num_percentage" translatable="false">0%</string>
     <string name="zero_decimal" translatable="false">0.0</string>
@@ -29,5 +30,20 @@
     <string name="settings">Settings</string>
     <string name="communicate">Communicate</string>
     <string name="share">Share</string>
-    <string name="send">Send</string>
+    <string name="send">Send recipe</string>
+    <string name="save">Save</string>
+    <string name="save_recipe">Save recipe</string>
+    <string name="saved_recipes">Saved recipes</string>
+    <string name="rate_app">Rate</string>
+    <string name="toast_saving">Saving to %s</string>
+    <string name="pizza_icon" translatable="false">pizza_icon</string>
+    <string name="recipe_file_name">Recipe File Name</string>
+    <string name="date_last_modified">Last modified date</string>
+    <string name="toast_saving_warning">You can\'t save an empty recipe!</string>
+    <string name="toast_send_warning">You can\'t send an empty recipe!</string>
+    <string name="delete">Delete</string>
+    <string name="required">*Required</string>
+    <string name="recipe_file_name_required">Recipe File Name*</string>
+    <string name="cancel">Cancel</string>
+    <string name="loaded_recipe">Loaded recipe</string>
 </resources>

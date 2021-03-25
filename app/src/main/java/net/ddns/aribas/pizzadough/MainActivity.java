@@ -1,6 +1,10 @@
 package net.ddns.aribas.pizzadough;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -32,38 +36,49 @@ import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.tasks.OnCompleteListener;
 import com.google.android.play.core.tasks.Task;
 
-import java.util.Arrays;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
 import java.util.Locale;
+import java.util.Calendar;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        SaveFileDialog.SaveFileDialogListener {
+    public static String PACKAGE_NAME;
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
     private AdView mAdView;
-    private Button calcButton;
-    private DrawerLayout drawer;
+    private Button mCalcButton;
+    private DrawerLayout mDrawerLayout;
     private EditText editPortions, editWeightPortion;
     private EditText editFlour, editWater, editYeast, editSalt, editOil;
-    private ReviewManager manager;
+    private ReviewManager mReviewManager;
     //private ReviewInfo reviewInfo;
     private SeekBar hydrationSeekBar, yeastSeekBar, saltSeekBar, oilSeekBar;
     private TextView hydrationPercentTextView, yeastPercentTextView, saltPercentTextView, oilPercentTextView;
 
-    private int hydration = 65, yeastSB = 20, saltSB = 25, oilSB = 30;
+    private int portions = 0, portion_weight = 0, total_weight = 0;
+    private int hydration = 65, yeastSB = 10, saltSB = 25, oilSB = 30;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        PACKAGE_NAME = getApplicationContext().getPackageName();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawer = findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
                 R.string.navigation_draw_open, R.string.navigation_draw_close);
-        drawer.addDrawerListener(toggle);
+        mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         // Initialize the Mobile Ads SDK.
@@ -207,12 +222,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        calcButton = findViewById(R.id.buttonCalculate);
-        calcButton.setOnClickListener(new View.OnClickListener() {
+        mCalcButton = findViewById(R.id.buttonCalculate);
+        mCalcButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                int portions, portion_weight, total_weight;
+                //int portions, portion_weight, total_weight;
                 float flour, water, yeast_per, salt_per, oil_per;
                 float yeast, salt, oil;
 
@@ -243,7 +258,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 } else {
                    String toastMessage = getString(R.string.toast_hydration_warning);
-                   Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_LONG).show();
+                   Toast.makeText(MainActivity.this, toastMessage,
+                           Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -255,29 +271,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         floatVal = .1f * intVal;
         return floatVal;
     }
+
     // Helper function to create the recipe
     public StringBuilder writeRecipe(){
-        StringBuilder sbuf = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
-        sbuf.append(getResources().getText(R.string.portions)).append(": ");
-        sbuf.append(editPortions.getText()).append(System.getProperty("line.separator"));
-        sbuf.append(getResources().getText(R.string.portion_weight)).append(": ");
-        sbuf.append(editWeightPortion.getText()).append(System.getProperty("line.separator"));
-        sbuf.append(getResources().getText(R.string.hydration)).append(": ");
-        sbuf.append(hydration).append('%').append(System.getProperty("line.separator"));
-        sbuf.append(getResources().getText(R.string.flour)).append(": ");
-        sbuf.append(editFlour.getText()).append(System.getProperty("line.separator"));
-        sbuf.append(getResources().getText(R.string.water)).append(": ");
-        sbuf.append(editWater.getText()).append(System.getProperty("line.separator"));
-        sbuf.append(getResources().getText(R.string.yeast_grams)).append(": ");
-        sbuf.append(editYeast.getText()).append(System.getProperty("line.separator"));
-        sbuf.append(getResources().getText(R.string.salt_grams)).append(": ");
-        sbuf.append(editSalt.getText()).append(System.getProperty("line.separator"));
-        sbuf.append(getResources().getText(R.string.oil_grams)).append(": ");
-        sbuf.append(editOil.getText());
+        sb.append(getResources().getText(R.string.portions)).append(": ");
+        sb.append(editPortions.getText()).append(System.getProperty("line.separator"));
+        sb.append(getResources().getText(R.string.portion_weight)).append(": ");
+        sb.append(editWeightPortion.getText()).append(System.getProperty("line.separator"));
+        sb.append(getResources().getText(R.string.hydration)).append(": ");
+        sb.append(hydration).append('%').append(System.getProperty("line.separator"));
+        sb.append(getResources().getText(R.string.flour)).append(": ");
+        sb.append(editFlour.getText()).append(System.getProperty("line.separator"));
+        sb.append(getResources().getText(R.string.water)).append(": ");
+        sb.append(editWater.getText()).append(System.getProperty("line.separator"));
+        sb.append(getResources().getText(R.string.yeast_grams)).append(": ");
+        sb.append(editYeast.getText()).append(System.getProperty("line.separator"));
+        sb.append(getResources().getText(R.string.salt_grams)).append(": ");
+        sb.append(editSalt.getText()).append(System.getProperty("line.separator"));
+        sb.append(getResources().getText(R.string.oil_grams)).append(": ");
+        sb.append(editOil.getText());
 
-        return sbuf;
+        return sb;
     }
+
     // Helper function to disable inputs
     public void disableInputs(){
         editFlour.setEnabled(false);
@@ -291,18 +309,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editOil.setEnabled(false);
         editOil.setInputType(InputType.TYPE_NULL);
     }
+
+    public void openSaveFileDialog() {
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        saveFileDialog.show(getSupportFragmentManager(), "Save File Dialog");
+    }
+
+    @Override
+    public void saveFile(String fileName) {
+        if (!fileName.isEmpty()) {
+            StringBuilder sb = writeRecipe();
+            FileOutputStream fos = null;
+            try {
+                fos = getApplicationContext().openFileOutput(fileName.concat(".txt"), Context.MODE_PRIVATE);
+                fos.write(sb.toString().getBytes());
+                String toastMessage = getString(R.string.toast_saving, getFilesDir() + "/" + fileName);
+                Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
     // Helper function to call In App Rating
     public void launchInAppRating(){
         // Replace FakeReviewManager for testing
-        manager = ReviewManagerFactory.create(MainActivity.this);
-        Task<ReviewInfo> request = manager.requestReviewFlow();
+        mReviewManager = ReviewManagerFactory.create(MainActivity.this);
+        Task<ReviewInfo> request = mReviewManager.requestReviewFlow();
         request.addOnCompleteListener(new OnCompleteListener<ReviewInfo>() {
             @Override
             public void onComplete(@NonNull Task<ReviewInfo> task) {
                 if (task.isSuccessful()) {
                     // We can get the ReviewInfo object
                     ReviewInfo reviewInfo = task.getResult();
-                    Task<Void> flow = manager.launchReviewFlow(MainActivity.this, reviewInfo);
+                    Task<Void> flow = mReviewManager.launchReviewFlow(MainActivity.this, reviewInfo);
                     flow.addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -324,8 +372,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)){
-            drawer.closeDrawer(GravityCompat.START);
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             launchInAppRating();
             super.onBackPressed();
@@ -361,30 +409,56 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.nav_settings:
-                Toast.makeText(this, R.string.settings, Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_share:
-                Intent shareIntent = new Intent();
-                shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_TEXT,"https://play.google.com/store/apps/details?id=net.ddns.aribas.pizzadough");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getText(R.string.app_name));
-                shareIntent.setType("text/plain");
-                startActivity(Intent.createChooser(shareIntent, "Share app"));
-                Toast.makeText(this, R.string.share, Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_send:
+        String toastMessage;
+        int itemId = item.getItemId();
+        if (itemId == R.id.nav_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+        }
+        else if (itemId == R.id.nav_save) {
+            if (portions > 0
+                    && portion_weight > 0
+                    && total_weight > 0) {
+                openSaveFileDialog();
+            }
+            else {
+                toastMessage = getString(R.string.toast_saving_warning);
+                Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if (itemId == R.id.nav_rate) {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + PACKAGE_NAME)));
+            } catch (ActivityNotFoundException anfe) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + PACKAGE_NAME)));
+            }
+        }
+        else if (itemId == R.id.nav_share) {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=net.ddns.aribas.pizzadough");
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getText(R.string.app_name));
+            shareIntent.setType("text/plain");
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.share)));
+        }
+        else if (itemId == R.id.nav_send) {
+            if (portions > 0
+                    && portion_weight > 0
+                    && total_weight > 0) {
                 Intent sendIntent = new Intent();
                 StringBuilder message = writeRecipe();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
                 sendIntent.setType("text/plain");
                 startActivity(Intent.createChooser(sendIntent, null));
-                Toast.makeText(this, R.string.send, Toast.LENGTH_SHORT).show();
-                break;
+            }
+            else {
+                toastMessage = getString(R.string.toast_send_warning);
+                Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
+            }
         }
-        drawer.closeDrawer(GravityCompat.START);
+        mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

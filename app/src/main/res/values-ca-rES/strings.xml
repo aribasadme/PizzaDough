@@ -20,6 +20,20 @@
     <string name="toast_oil_is">Oli al : %.1f%%</string>
     <string name="settings">Configuració</string>
     <string name="share">Comparteix</string>
-    <string name="send">Envia</string>
+    <string name="send">Envia recepta</string>
     <string name="communicate">Comunicació</string>
+    <string name="rate_app">Puntua</string>
+    <string name="save">Desa</string>
+    <string name="toast_saving">Desant recepta en %s</string>
+    <string name="saved_recipes">Receptes desades</string>
+    <string name="delete">Elimina</string>
+    <string name="toast_saving_warning">No es pot desar una recepta buida!</string>
+    <string name="toast_send_warning">No es pot enviar una recepta buida!</string>
+    <string name="recipe_file_name">Nom fitxer</string>
+    <string name="date_last_modified">Data útim canvi</string>
+    <string name="save_recipe">Desa recepta</string>
+    <string name="required">*Obligatori</string>
+    <string name="recipe_file_name_required">Nom fitxer*</string>
+    <string name="cancel">Anul.la</string>
+    <string name="loaded_recipe">Recepta desada</string>
 </resources>

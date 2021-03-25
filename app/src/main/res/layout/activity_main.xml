@@ -38,6 +38,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
             <EditText
                 android:id="@+id/editPortions"
                 android:layout_width="0dp"
@@ -49,6 +50,7 @@
                 android:ems="10"
                 android:hint="@string/zero_num"
                 android:inputType="number"
+                android:nextFocusForward="@+id/editWeightPortion"
                 android:textAlignment="textEnd"
                 android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -73,7 +75,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:ems="10"
-                android:hint="@string/zero_num"
+                android:hint="@string/initial_wight_portion"
                 android:autofillHints=""
                 android:inputType="number"
                 android:textAlignment="textEnd"
@@ -245,7 +247,9 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:background="@color/colorPrimary"
                 android:text="@string/calculate"
+                android:textColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
