@@ -20,7 +20,7 @@
     <string name="toast_hydration_warning">La hidratación tiene que ser mayor que 0 y menor que 100</string>
     <string name="settings">Ajustes</string>
     <string name="share">Compartir</string>
-    <string name="send">Enviar receta</string>
+    <string name="send">Enviar</string>
     <string name="communicate">Comunicación</string>
     <string name="rate_app">Evaluar</string>
     <string name="save">Guardar</string>
@@ -33,7 +33,8 @@
     <string name="date_last_modified">Fecha última modificación</string>
     <string name="save_recipe">Guardar receta</string>
     <string name="required">*Obligatorio</string>
-    <string name="recipe_file_name_required">Nombre archivo*</string>
     <string name="cancel">Cancelar</string>
     <string name="loaded_recipe">Receta guardada</string>
+    <string name="send_recipe">Enviar receta</string>
+    <string name="recipe_name_required">Nombre receta*</string>
 </resources>

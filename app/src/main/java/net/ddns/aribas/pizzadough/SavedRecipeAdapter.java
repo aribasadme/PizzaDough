@@ -18,81 +18,90 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
     private static final String LOG_TAG = SavedRecipeAdapter.class.getSimpleName();
 
     private final ArrayList<SavedRecipeItem> mSavedRecipeList;
-    private OnItemClickListener mClickListener;
-    private String mDeleteMenuTitle;
+    private static String[] mMenuTitles;
+    private static OnItemClickListener mClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+        void onSendClick(int position);
         void onDeleteClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mClickListener = listener;
     }
-    public void setDeleteMenuTitle(String title){
-        mDeleteMenuTitle = title;
+
+    public void setMenuTitles(String[] titles) {
+        mMenuTitles = titles;
+    };
+
+    public SavedRecipeAdapter(ArrayList<SavedRecipeItem> savedRecipeList) {
+        mSavedRecipeList = savedRecipeList;
     }
 
-    public static class SavedRecipeViewHolder extends RecyclerView.ViewHolder {
+    public static class SavedRecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+            View.OnCreateContextMenuListener, MenuItem.OnMenuItemClickListener {
         public TextView mSavedRecipeName;
         public TextView mSavedRecipeDate;
 
         public SavedRecipeViewHolder(View itemView,
-                                     final OnItemClickListener clickListener,
-                                     final String title) {
+                                     final String[] titles) {
             super(itemView);
 
             mSavedRecipeName = itemView.findViewById(R.id.text_view_title);
             mSavedRecipeDate = itemView.findViewById(R.id.text_view_date);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (clickListener != null) {
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) {
-                            Log.i(LOG_TAG, "onClick");
-                            clickListener.onItemClick(position);
-                        }
+            itemView.setOnClickListener(this);
+            itemView.setOnCreateContextMenuListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (mClickListener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    Log.i(LOG_TAG, "onClick");
+                    mClickListener.onItemClick(position);
+                }
+            }
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            MenuItem send = contextMenu.add(Menu.NONE, 1, 1, mMenuTitles[0]);
+            MenuItem delete = contextMenu.add(Menu.NONE, 2, 2, mMenuTitles[1]);
+
+            send.setOnMenuItemClickListener(this);
+            delete.setOnMenuItemClickListener(this);
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            if (mClickListener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    Log.i(LOG_TAG, "onMenuItemClick");
+                    switch (menuItem.getItemId()){
+                        case 1:
+                            // Send
+                            mClickListener.onSendClick(position);
+                            return true;
+                        case 2:
+                            // Delete
+                            mClickListener.onDeleteClick(position);
+                            return true;
                     }
                 }
-            });
-
-            itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
-                @Override
-                public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                    MenuItem delete = menu.add(Menu.NONE, 1, 1, title);
-
-                    delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            if (clickListener != null){
-                                int position = getAdapterPosition();
-                                if (position != RecyclerView.NO_POSITION) {
-                                    Log.i(LOG_TAG, "onMenuItemClick");
-                                    if(item.getItemId() == 1) {
-                                        clickListener.onDeleteClick(position);
-                                        return true;
-                                    }
-                                }
-                            }
-                            return false;
-                        }
-                    });
-                }
-            });
+            }
+            return false;
         }
-    }
-
-    public SavedRecipeAdapter(ArrayList<SavedRecipeItem> savedRecipeList) {
-        mSavedRecipeList = savedRecipeList;
     }
 
     @NonNull
     @Override
     public SavedRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_recipe_item, parent, false);
-        return new SavedRecipeViewHolder(v, mClickListener, mDeleteMenuTitle);
+        return new SavedRecipeViewHolder(v, mMenuTitles);
     }
 
     @Override
