@@ -14,6 +14,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.preferences, rootKey);
 
         Preference savedRecipesPref = findPreference("saved_recipes");
+        assert savedRecipesPref != null;
         savedRecipesPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {

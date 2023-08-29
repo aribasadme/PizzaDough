@@ -7,8 +7,8 @@
     <string name="salt">Sal</string>
     <string name="oil">Aceite</string>
     <string name="calculate">CALCULA</string>
-    <string name="portions">Porciones</string>
-    <string name="portion_weight">Peso porción (gr)</string>
+    <string name="portions">Pizzas</string>
+    <string name="portion_weight">Peso pizza (gr)</string>
     <string name="hydration">Hidratación</string>
     <string name="yeast_grams">Levadura (gr)</string>
     <string name="salt_grams">Sal (gr)</string>
@@ -37,4 +37,5 @@
     <string name="loaded_recipe">Receta guardada</string>
     <string name="send_recipe">Enviar receta</string>
     <string name="recipe_name_required">Nombre receta*</string>
+    <string name="remove_adds">Remove adds</string>
 </resources>

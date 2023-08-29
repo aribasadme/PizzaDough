@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hydration">Hidratació</string>
-    <string name="portion_weight">Pes porció (gr)</string>
-    <string name="portions">Porcions</string>
+    <string name="portion_weight">Pes pizza (gr)</string>
+    <string name="portions">Pizzes</string>
     <string name="grams">grams</string>
     <string name="flour">Farina (gr)</string>
     <string name="water">Aigua (gr)</string>
@@ -37,4 +37,5 @@
     <string name="loaded_recipe">Recepta desada</string>
     <string name="send_recipe">Envia recepta</string>
     <string name="recipe_name_required">Nom recepta*</string>
+    <string name="remove_adds">Remove adds</string>
 </resources>

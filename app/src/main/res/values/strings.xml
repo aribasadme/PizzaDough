@@ -21,7 +21,7 @@
     <string name="oil">Oil</string>
     <string name="oil_grams">Oil (grams)</string>
     <string name="calculate">CALCULATE</string>
-    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-1453187186238733/4044270455</string>
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-1453187186238733/1858985384</string>
     <string name="toast_hydration_warning">Hydration must be greater than 0 and less than 100</string>
     <string name="toast_hydration_is">Hydration is : %d%%</string>
     <string name="toast_yeast_is">Yeast is : %.1f%%</string>
@@ -47,4 +47,5 @@
     <string name="recipe_name_required">Recipe name*</string>
     <string name="cancel">Cancel</string>
     <string name="loaded_recipe">Loaded recipe</string>
+    <string name="remove_adds">Remove adds</string>
 </resources>

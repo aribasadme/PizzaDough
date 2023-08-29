@@ -45,7 +45,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:autofillHints=""
                 android:clickable="true"
                 android:ems="10"
                 android:hint="@string/zero_num"
@@ -76,7 +75,6 @@
                 android:layout_marginEnd="8dp"
                 android:ems="10"
                 android:hint="@string/initial_wight_portion"
-                android:autofillHints=""
                 android:inputType="number"
                 android:textAlignment="textEnd"
                 android:textSize="22sp"
@@ -181,7 +179,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:autofillHints=""
                 android:ems="10"
                 android:hint="@string/zero_decimal_percentage"
                 android:textAlignment="center"
@@ -272,7 +269,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:autofillHints=""
                 android:ems="10"
                 android:hint="@string/zero_num"
                 android:inputType="none"
@@ -280,7 +276,8 @@
                 android:textSize="22sp"
                 app:layout_constraintEnd_toStartOf="@+id/editWater"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewFlour" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewFlour"
+                android:autofillHints="Calculated flour" />
 
             <TextView
                 android:id="@+id/textViewWater"
@@ -299,7 +296,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:autofillHints=""
                 android:ems="10"
                 android:hint="@string/zero_num"
                 android:inputType="none"
@@ -307,7 +303,8 @@
                 android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/editFlour"
-                app:layout_constraintTop_toBottomOf="@+id/textViewWater" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewWater"
+                android:autofillHints="Calculated water" />
 
             <!-- Yeast result -->
             <TextView
@@ -327,7 +324,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:autofillHints=""
                 android:ems="10"
                 android:hint="@string/zero_num"
                 android:inputType="none"
@@ -335,7 +331,8 @@
                 android:textSize="22sp"
                 app:layout_constraintEnd_toStartOf="@+id/editSalt"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/yeastGramsTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/yeastGramsTextView"
+                android:autofillHints="Calculated yeast" />
 
             <!-- Salt result -->
             <TextView
@@ -355,7 +352,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:autofillHints=""
                 android:ems="10"
                 android:hint="@string/zero_num"
                 android:inputType="none"
@@ -364,7 +360,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/editOil"
                 app:layout_constraintHorizontal_bias="0.804"
                 app:layout_constraintStart_toEndOf="@+id/editYeast"
-                app:layout_constraintTop_toBottomOf="@+id/saltGramsTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/saltGramsTextView"
+                android:autofillHints="Calculated salt" />
 
             <!-- Oil result -->
             <TextView
@@ -384,7 +381,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:autofillHints=""
                 android:ems="10"
                 android:hint="@string/zero_num"
                 android:inputType="number"
@@ -392,23 +388,22 @@
                 android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/editSalt"
-                app:layout_constraintTop_toBottomOf="@+id/oilGramsTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/oilGramsTextView"
+                android:autofillHints="Calculated oil" />
 
             <com.google.android.gms.ads.AdView
                 android:id="@+id/adView"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                ads:adSize="BANNER"
+                ads:adSize="SMART_BANNER"
                 ads:adUnitId="@string/banner_ad_unit_id"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editSalt"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintVertical_bias="0.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

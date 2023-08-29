@@ -28,4 +28,11 @@
                 android:title="@string/share" />
         </menu>
     </item>
+    <item android:title="@string/remove_adds">
+        <menu>
+            <item
+                android:id="@+id/nav_remove_ads"
+                android:title="@string/remove_adds" />
+        </menu>
+    </item>
 </menu>

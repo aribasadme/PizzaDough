@@ -3,7 +3,6 @@ package net.ddns.aribas.pizzadough;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
@@ -23,10 +22,25 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.android.billingclient.api.AcknowledgePurchaseParams;
+import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.ProductDetailsResponseListener;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesResponseListener;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.ProductDetails;
+import com.android.billingclient.api.QueryProductDetailsParams;
+import com.android.billingclient.api.QueryPurchasesParams;
+import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.SkuDetailsParams;
+import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.navigation.NavigationView;
@@ -35,13 +49,13 @@ import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.tasks.OnCompleteListener;
 import com.google.android.play.core.tasks.Task;
+import com.google.common.collect.ImmutableList;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Calendar;
 
 
 
@@ -53,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AdView mAdView;
     private Button mCalcButton;
     private DrawerLayout mDrawerLayout;
+    private Preferences preferences;
+    private BillingClient billingClient;
+    private PurchasesUpdatedListener purchasesUpdatedListener;
     private EditText editPortions, editWeightPortion;
     private EditText editFlour, editWater, editYeast, editSalt, editOil;
     private ReviewManager mReviewManager;
@@ -81,25 +98,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Initialize the Mobile Ads SDK.
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) { }
-        });
+        preferences = new Preferences(getApplicationContext());
 
-        // Set your test devices. Check your logcat output for the hashed device ID to
-        // get test ads on a physical device. e.g.
-        // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
-        // to get test ads on this device."
-        /*
-        MobileAds.setRequestConfiguration(
-                new RequestConfiguration.Builder()
-                        .setTestDeviceIds(Arrays.asList(AdRequest.DEVICE_ID_EMULATOR))
-                        .build());
-        */
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+        if (preferences.getRemoveAd() == 0) {
+            buildAdView();
+        }
+
+        Log.i(LOG_TAG, "Building BillingClient");
+        purchasesUpdatedListener = new PurchasesUpdatedListener() {
+            @Override
+            public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK &&
+                        purchases != null){
+                    for (Purchase purchase : purchases) {
+                        verifyPayment(purchase);
+                    }
+                } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+                    Log.i(LOG_TAG, "Item already owned");
+                } else {
+                    // Handle any other error codes.
+                    return;
+                }
+            }
+        };
+
+        billingClient = BillingClient.newBuilder(getApplicationContext())
+                .setListener(purchasesUpdatedListener)
+                .enablePendingPurchases()
+                .build();
 
         editPortions = findViewById(R.id.editPortions);
         editWeightPortion = findViewById(R.id.editWeightPortion);
@@ -216,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                String toastMessage = getString(R.string.toast_oil_is,getConvertedValue(oilSB));
+                String toastMessage = getString(R.string.toast_oil_is, getConvertedValue(oilSB));
                 Toast.makeText(MainActivity.this, toastMessage,
                         Toast.LENGTH_SHORT).show();
             }
@@ -263,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         });
-    }
+    } // onCreate
 
     // Helper function to convert value from int to float
     public float getConvertedValue(int intVal){
@@ -294,6 +320,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sb.append(editOil.getText());
 
         return sb;
+    }
+
+    public void buildAdView() {
+        // Initialize the Mobile Ads SDK.
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) { }
+        });
+
+        // Set your test devices. Check your logcat output for the hashed device ID to
+        // get test ads on a physical device. e.g.
+        // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+        // to get test ads on this device."
+        /*
+        MobileAds.setRequestConfiguration(
+                new RequestConfiguration.Builder()
+                        .setTestDeviceIds(Arrays.asList(AdRequest.DEVICE_ID_EMULATOR))
+                        .build());
+        */
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     // Helper function to disable inputs
@@ -358,16 +406,111 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             // reviewed or not, or even whether the review dialog was shown. Thus, no
                             // matter the result, we continue our app flow.
                             if (task.isSuccessful()){
-                                Toast.makeText(MainActivity.this, "In App Rating complete", Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(MainActivity.this, "In App Rating complete", Toast.LENGTH_SHORT).show();
+                                Log.i(LOG_TAG, "In App Rating complete");
                             }
                         }
                     });
                 } else {
                     // There was some problem, continue regardless of the result.
-                    Toast.makeText(MainActivity.this, "In App Rating failure: requestReviewFlow", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MainActivity.this, "In App Rating failure: requestReviewFlow", Toast.LENGTH_SHORT).show();
+                    Log.i(LOG_TAG, "In App Rating failure: requestReviewFlow");
                 }
             }
         });
+    }
+
+    void connectGooglePlayBilling() {
+        Log.i(LOG_TAG, "Starting connection to Google Play Billing service");
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    Log.i(LOG_TAG, "Connected");
+                    getProducts();
+                }
+            }
+            @Override
+            public void onBillingServiceDisconnected() {
+                connectGooglePlayBilling();
+            }
+        });
+    }
+
+    void getProducts() {
+        Log.i(LOG_TAG,"Querying for product details");
+        BillingResult billingResult = billingClient.isFeatureSupported(BillingClient.FeatureType.PRODUCT_DETAILS);
+        if (billingResult.getResponseCode() != BillingClient.BillingResponseCode.OK ) {
+            Log.i(LOG_TAG, String.format("Feature not supported. %s", billingResult.toString()));
+            return;
+        }
+        else {
+            Log.i(LOG_TAG, String.format("Feature is supported. %s", billingResult.toString()));
+            ImmutableList<QueryProductDetailsParams.Product> productList = ImmutableList.of(QueryProductDetailsParams.Product.newBuilder()
+                    .setProductId("remove_ads_id")
+                    .setProductType(BillingClient.ProductType.INAPP)
+                    .build());
+
+            QueryProductDetailsParams params = QueryProductDetailsParams.newBuilder()
+                    .setProductList(productList)
+                    .build();
+
+            billingClient.queryProductDetailsAsync(
+                    params,
+                    new ProductDetailsResponseListener() {
+                        public void onProductDetailsResponse(BillingResult billingResult, List<ProductDetails> productDetailsList) {
+                            // Process the result
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK &&
+                                    productDetailsList != null) {
+                                for (ProductDetails productDetails : productDetailsList) {
+                                    if (productDetails.getProductId().equals("remove_ads_id")) {
+                                        launchPurchaseFlow(productDetails);
+                                    }
+                                }
+                            }
+                        }
+                    }
+            );
+        }
+    }
+
+    void launchPurchaseFlow(ProductDetails productDetails) {
+        ImmutableList<BillingFlowParams.ProductDetailsParams> productDetailsParamsList =
+                ImmutableList.of(
+                        BillingFlowParams.ProductDetailsParams.newBuilder()
+                                .setProductDetails(productDetails)
+                                .build()
+                );
+
+        BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
+                .setProductDetailsParamsList(productDetailsParamsList)
+                .build();
+
+        // Launch the billing flow
+        billingClient.launchBillingFlow(MainActivity.this, billingFlowParams);
+    }
+
+    void verifyPayment(Purchase purchase) {
+        Log.i(LOG_TAG, "Starting payment verification flow");
+        if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+            if (!purchase.isAcknowledged()) {
+                AcknowledgePurchaseParams acknowledgePurchaseParams =
+                        AcknowledgePurchaseParams.newBuilder()
+                                .setPurchaseToken(purchase.getPurchaseToken())
+                                .build();
+                billingClient.acknowledgePurchase(acknowledgePurchaseParams, new AcknowledgePurchaseResponseListener() {
+                    @Override
+                    public void onAcknowledgePurchaseResponse(@NonNull BillingResult billingResult) {
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                            // 1 - True - Remove ad
+                            // 0 - False - Show ad
+                            Log.i(LOG_TAG, "Marking item as purchased");
+                            preferences.setRemoveAd(1);
+                        }
+                    }
+                });
+            }
+        }
     }
 
     @Override
@@ -396,6 +539,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (mAdView != null) {
             mAdView.resume();
         }
+        billingClient.queryPurchasesAsync(
+                QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.INAPP).build(),
+                new PurchasesResponseListener() {
+                    @Override
+                    public void onQueryPurchasesResponse(
+                            @NonNull BillingResult billingResult,
+                            @NonNull List<Purchase> list) {
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                            for (Purchase purchase : list) {
+                                if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED && !purchase.isAcknowledged()) {
+                                    verifyPayment(purchase);
+                                }
+                            }
+                        }
+                    }
+                }
+        );
     }
 
     /** Called before the activity is destroyed */
@@ -456,6 +616,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toastMessage = getString(R.string.toast_send_warning);
                 Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
             }
+        }
+        else if (itemId == R.id.nav_remove_ads){
+            connectGooglePlayBilling();
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

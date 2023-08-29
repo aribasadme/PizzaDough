@@ -8,7 +8,7 @@
         android:id="@+id/editFileName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints=""
+        android:autofillHints="Recipe name"
         android:hint="@string/recipe_name_required"
         android:inputType="text" />
 
