@@ -1,4 +1,4 @@
-package net.ddns.aribas.pizzadough;
+package com.aribasadmetlla.pizzadough;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -53,7 +53,7 @@ public class SaveFileDialog extends AppCompatDialogFragment {
         try {
             listener = (SaveFileDialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() +
+            throw new ClassCastException(context +
                     "must implement SaveFileDialogListener");
         }
     }

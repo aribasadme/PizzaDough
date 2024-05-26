@@ -1,4 +1,4 @@
-package net.ddns.aribas.pizzadough;
+package com.aribasadmetlla.pizzadough;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -28,16 +29,14 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.PendingPurchasesParams;
+import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.ProductDetailsResponseListener;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.QueryProductDetailsParams;
 import com.android.billingclient.api.QueryPurchasesParams;
-import com.android.billingclient.api.SkuDetails;
-import com.android.billingclient.api.SkuDetailsParams;
-import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -53,28 +52,21 @@ import com.google.common.collect.ImmutableList;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         SaveFileDialog.SaveFileDialogListener {
-    public static String PACKAGE_NAME;
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-
+    public static String PACKAGE_NAME;
     private AdView mAdView;
-    private Button mCalcButton;
     private DrawerLayout mDrawerLayout;
     private Preferences preferences;
     private BillingClient billingClient;
-    private PurchasesUpdatedListener purchasesUpdatedListener;
     private EditText editPortions, editWeightPortion;
     private EditText editFlour, editWater, editYeast, editSalt, editOil;
     private ReviewManager mReviewManager;
-    //private ReviewInfo reviewInfo;
-    private SeekBar hydrationSeekBar, yeastSeekBar, saltSeekBar, oilSeekBar;
     private TextView hydrationPercentTextView, yeastPercentTextView, saltPercentTextView, oilPercentTextView;
 
     private int portions = 0, portion_weight = 0, total_weight = 0;
@@ -82,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         PACKAGE_NAME = getApplicationContext().getPackageName();
@@ -104,27 +98,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             buildAdView();
         }
 
+        Log.i(LOG_TAG, "Check purchased products");
+        checkProducts();
+
         Log.i(LOG_TAG, "Building BillingClient");
-        purchasesUpdatedListener = new PurchasesUpdatedListener() {
+        PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
             @Override
-            public void onPurchasesUpdated(BillingResult billingResult, List<Purchase> purchases) {
+            public void onPurchasesUpdated(@NonNull BillingResult billingResult, List<Purchase> purchases) {
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK &&
-                        purchases != null){
+                        purchases != null) {
                     for (Purchase purchase : purchases) {
                         verifyPayment(purchase);
                     }
                 } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
                     Log.i(LOG_TAG, "Item already owned");
-                } else {
-                    // Handle any other error codes.
-                    return;
                 }
             }
         };
 
+        PendingPurchasesParams pendingPurchasesParams = PendingPurchasesParams.newBuilder()
+                .enableOneTimeProducts()
+                .build();
+
         billingClient = BillingClient.newBuilder(getApplicationContext())
                 .setListener(purchasesUpdatedListener)
-                .enablePendingPurchases()
+                .enablePendingPurchases(pendingPurchasesParams)
                 .build();
 
         editPortions = findViewById(R.id.editPortions);
@@ -137,12 +135,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editOil = findViewById(R.id.editOil);
 
         hydrationPercentTextView = findViewById(R.id.hydrationPercentTextView);
-        hydrationSeekBar = findViewById(R.id.hydrationSeekBar);
+        //private ReviewInfo reviewInfo;
+        SeekBar hydrationSeekBar = findViewById(R.id.hydrationSeekBar);
         yeastPercentTextView = findViewById(R.id.yeastPercentTextView);
-        yeastSeekBar = findViewById(R.id.yeastSeekBar);
-        saltSeekBar = findViewById(R.id.saltSeekBar);
+        SeekBar yeastSeekBar = findViewById(R.id.yeastSeekBar);
+        SeekBar saltSeekBar = findViewById(R.id.saltSeekBar);
         saltPercentTextView = findViewById(R.id.saltPercentTextView);
-        oilSeekBar = findViewById(R.id.oilSeekBar);
+        SeekBar oilSeekBar = findViewById(R.id.oilSeekBar);
         oilPercentTextView = findViewById(R.id.oilPercentTextView);
 
         // Disabling Inputs
@@ -153,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         hydrationSeekBar.setProgress(hydration);
         hydrationPercentTextView.setText(String.format(Locale.getDefault(), "%d%%", hydration));
         // Sets change listener
-        hydrationSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+        hydrationSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -167,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                String toastMessage = getString(R.string.toast_hydration_is,hydration);
+                String toastMessage = getString(R.string.toast_hydration_is, hydration);
                 Toast.makeText(MainActivity.this, toastMessage,
                         Toast.LENGTH_SHORT).show();
             }
@@ -178,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         yeastSeekBar.setProgress(yeastSB);
         yeastPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(yeastSB)));
         // Sets change listener
-        yeastSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+        yeastSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -192,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                String toastMessage = getString(R.string.toast_yeast_is,getConvertedValue(yeastSB));
+                String toastMessage = getString(R.string.toast_yeast_is, getConvertedValue(yeastSB));
                 Toast.makeText(MainActivity.this, toastMessage,
                         Toast.LENGTH_SHORT).show();
             }
@@ -203,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         saltSeekBar.setProgress(saltSB);
         saltPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(saltSB)));
         // Sets change listener
-        saltSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+        saltSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -217,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                String toastMessage = getString(R.string.toast_salt_is,getConvertedValue(saltSB));
+                String toastMessage = getString(R.string.toast_salt_is, getConvertedValue(saltSB));
                 Toast.makeText(MainActivity.this, toastMessage,
                         Toast.LENGTH_SHORT).show();
             }
@@ -228,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         oilSeekBar.setProgress(oilSB);
         oilPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(oilSB)));
         // Sets change listener
-        oilSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+        oilSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -248,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        mCalcButton = findViewById(R.id.buttonCalculate);
+        Button mCalcButton = findViewById(R.id.buttonCalculate);
         mCalcButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -257,8 +256,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 float flour, water, yeast_per, salt_per, oil_per;
                 float yeast, salt, oil;
 
-                portions =  (editPortions.getText().toString().equals("")) ? 0 : Integer.parseInt(editPortions.getText().toString());
-                portion_weight =  (editWeightPortion.getText().toString().equals("")) ? 0 : Integer.parseInt(editWeightPortion.getText().toString());
+                portions = (editPortions.getText().toString().isEmpty()) ? 0 : Integer.parseInt(editPortions.getText().toString());
+                portion_weight = (editWeightPortion.getText().toString().isEmpty()) ? 0 : Integer.parseInt(editWeightPortion.getText().toString());
 
                 yeast_per = getConvertedValue(yeastSB);
                 salt_per = getConvertedValue(saltSB);
@@ -266,56 +265,56 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 total_weight = portions * portion_weight;
 
-               if (hydration > 0 && hydration <= 100) {
-                   flour = total_weight / (1 + hydration / (float) 100);
-                   water = total_weight - flour;
+                if (hydration > 0 && hydration <= 100) {
+                    flour = total_weight / (1 + hydration / (float) 100);
+                    water = total_weight - flour;
 
-                   // Calculate percentages
-                   yeast = flour * (yeast_per / 100);
-                   salt = flour * (salt_per / 100);
-                   oil = flour * (oil_per/100);
+                    // Calculate percentages
+                    yeast = flour * (yeast_per / 100);
+                    salt = flour * (salt_per / 100);
+                    oil = flour * (oil_per / 100);
 
-                   // Print outputs
-                   editFlour.setText(String.valueOf(Math.round(flour)));
-                   editWater.setText(String.valueOf(Math.round(water)));
-                   editYeast.setText(String.valueOf(Math.round(yeast)));
-                   editSalt.setText(String.valueOf(Math.round(salt)));
-                   editOil.setText(String.valueOf(Math.round(oil)));
+                    // Print outputs
+                    editFlour.setText(String.valueOf(Math.round(flour)));
+                    editWater.setText(String.valueOf(Math.round(water)));
+                    editYeast.setText(String.valueOf(Math.round(yeast)));
+                    editSalt.setText(String.valueOf(Math.round(salt)));
+                    editOil.setText(String.valueOf(Math.round(oil)));
 
                 } else {
-                   String toastMessage = getString(R.string.toast_hydration_warning);
-                   Toast.makeText(MainActivity.this, toastMessage,
-                           Toast.LENGTH_LONG).show();
+                    String toastMessage = getString(R.string.toast_hydration_warning);
+                    Toast.makeText(MainActivity.this, toastMessage,
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });
     } // onCreate
 
     // Helper function to convert value from int to float
-    public float getConvertedValue(int intVal){
+    public float getConvertedValue(int intVal) {
         float floatVal;
         floatVal = .1f * intVal;
         return floatVal;
     }
 
     // Helper function to create the recipe
-    public StringBuilder writeRecipe(){
+    public StringBuilder writeRecipe() {
         StringBuilder sb = new StringBuilder();
 
         sb.append(getResources().getText(R.string.portions)).append(": ");
-        sb.append(editPortions.getText()).append(System.getProperty("line.separator"));
+        sb.append(editPortions.getText()).append(System.lineSeparator());
         sb.append(getResources().getText(R.string.portion_weight)).append(": ");
-        sb.append(editWeightPortion.getText()).append(System.getProperty("line.separator"));
+        sb.append(editWeightPortion.getText()).append(System.lineSeparator());
         sb.append(getResources().getText(R.string.hydration)).append(": ");
-        sb.append(hydration).append('%').append(System.getProperty("line.separator"));
+        sb.append(hydration).append('%').append(System.lineSeparator());
         sb.append(getResources().getText(R.string.flour)).append(": ");
-        sb.append(editFlour.getText()).append(System.getProperty("line.separator"));
+        sb.append(editFlour.getText()).append(System.lineSeparator());
         sb.append(getResources().getText(R.string.water)).append(": ");
-        sb.append(editWater.getText()).append(System.getProperty("line.separator"));
+        sb.append(editWater.getText()).append(System.lineSeparator());
         sb.append(getResources().getText(R.string.yeast_grams)).append(": ");
-        sb.append(editYeast.getText()).append(System.getProperty("line.separator"));
+        sb.append(editYeast.getText()).append(System.lineSeparator());
         sb.append(getResources().getText(R.string.salt_grams)).append(": ");
-        sb.append(editSalt.getText()).append(System.getProperty("line.separator"));
+        sb.append(editSalt.getText()).append(System.lineSeparator());
         sb.append(getResources().getText(R.string.oil_grams)).append(": ");
         sb.append(editOil.getText());
 
@@ -326,7 +325,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Initialize the Mobile Ads SDK.
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) { }
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+            }
         });
 
         // Set your test devices. Check your logcat output for the hashed device ID to
@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     // Helper function to disable inputs
-    public void disableInputs(){
+    public void disableInputs() {
         editFlour.setEnabled(false);
         editFlour.setInputType(InputType.TYPE_NULL);
         editWater.setEnabled(false);
@@ -388,7 +388,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     // Helper function to call In App Rating
-    public void launchInAppRating(){
+    public void launchInAppRating() {
         // Replace FakeReviewManager for testing
         mReviewManager = ReviewManagerFactory.create(MainActivity.this);
         Task<ReviewInfo> request = mReviewManager.requestReviewFlow();
@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             // The flow has finished. The API does not indicate whether the user
                             // reviewed or not, or even whether the review dialog was shown. Thus, no
                             // matter the result, we continue our app flow.
-                            if (task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 // Toast.makeText(MainActivity.this, "In App Rating complete", Toast.LENGTH_SHORT).show();
                                 Log.i(LOG_TAG, "In App Rating complete");
                             }
@@ -430,6 +430,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     getProducts();
                 }
             }
+
             @Override
             public void onBillingServiceDisconnected() {
                 connectGooglePlayBilling();
@@ -438,14 +439,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     void getProducts() {
-        Log.i(LOG_TAG,"Querying for product details");
+        Log.i(LOG_TAG, "Querying for product details");
         BillingResult billingResult = billingClient.isFeatureSupported(BillingClient.FeatureType.PRODUCT_DETAILS);
-        if (billingResult.getResponseCode() != BillingClient.BillingResponseCode.OK ) {
-            Log.i(LOG_TAG, String.format("Feature not supported. %s", billingResult.toString()));
-            return;
-        }
-        else {
-            Log.i(LOG_TAG, String.format("Feature is supported. %s", billingResult.toString()));
+        if (billingResult.getResponseCode() != BillingClient.BillingResponseCode.OK) {
+            Log.i(LOG_TAG, String.format("Feature not supported. %s", billingResult));
+        } else {
+            Log.i(LOG_TAG, String.format("Feature is supported. %s", billingResult));
             ImmutableList<QueryProductDetailsParams.Product> productList = ImmutableList.of(QueryProductDetailsParams.Product.newBuilder()
                     .setProductId("remove_ads_id")
                     .setProductType(BillingClient.ProductType.INAPP)
@@ -458,10 +457,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             billingClient.queryProductDetailsAsync(
                     params,
                     new ProductDetailsResponseListener() {
-                        public void onProductDetailsResponse(BillingResult billingResult, List<ProductDetails> productDetailsList) {
+                        public void onProductDetailsResponse(@NonNull BillingResult billingResult, @NonNull List<ProductDetails> productDetailsList) {
                             // Process the result
-                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK &&
-                                    productDetailsList != null) {
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                                 for (ProductDetails productDetails : productDetailsList) {
                                     if (productDetails.getProductId().equals("remove_ads_id")) {
                                         launchPurchaseFlow(productDetails);
@@ -472,6 +470,53 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
             );
         }
+    }
+    void checkProducts() {
+
+        PendingPurchasesParams pendingPurchasesParams = PendingPurchasesParams.newBuilder()
+                .enableOneTimeProducts()
+                .build();
+
+        billingClient = BillingClient.newBuilder(this)
+                .enablePendingPurchases(pendingPurchasesParams)
+                .setListener((billingResult, list) -> {
+        }).build();
+
+        final BillingClient finalBillingClient = billingClient;
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    finalBillingClient.queryPurchasesAsync(
+                            QueryPurchasesParams.newBuilder()
+                                    .setProductType(BillingClient.ProductType.INAPP)
+                                    .build(),
+                            new PurchasesResponseListener() {
+                                @Override
+                                public void onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List<Purchase> list) {
+                                    Log.i(LOG_TAG, "" + list);
+                                    if (list.isEmpty()) {
+                                        Log.i(LOG_TAG, "No product");
+                                        preferences.setRemoveAd(0);
+                                    } else {
+                                        for (Purchase purchase : list) {
+                                            if (purchase.getProducts().get(0).equals("remove_ads_id")) {
+                                                Log.i(LOG_TAG, purchase.getProducts() + " Product found");
+                                                preferences.setRemoveAd(1);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                    );
+                }
+            }
+
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Empty
+            }
+        });
     }
 
     void launchPurchaseFlow(ProductDetails productDetails) {
@@ -515,7 +560,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             launchInAppRating();
@@ -523,7 +568,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    /** Called when leaving the activity */
+    /**
+     * Called when leaving the activity
+     */
     @Override
     public void onPause() {
         if (mAdView != null) {
@@ -532,7 +579,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onPause();
     }
 
-    /** Called when returning to the activity */
+    /**
+     * Called when returning to the activity
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -540,12 +589,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mAdView.resume();
         }
         billingClient.queryPurchasesAsync(
-                QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.INAPP).build(),
+                QueryPurchasesParams.newBuilder()
+                        .setProductType(BillingClient.ProductType.INAPP)
+                        .build(),
                 new PurchasesResponseListener() {
                     @Override
-                    public void onQueryPurchasesResponse(
-                            @NonNull BillingResult billingResult,
-                            @NonNull List<Purchase> list) {
+                    public void onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List<Purchase> list) {
                         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                             for (Purchase purchase : list) {
                                 if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED && !purchase.isAcknowledged()) {
@@ -558,7 +607,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         );
     }
 
-    /** Called before the activity is destroyed */
+    /**
+     * Called before the activity is destroyed
+     */
     @Override
     public void onDestroy() {
         if (mAdView != null) {
@@ -574,34 +625,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (itemId == R.id.nav_settings) {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
-        }
-        else if (itemId == R.id.nav_save) {
+        } else if (itemId == R.id.nav_save) {
             if (portions > 0
                     && portion_weight > 0
                     && total_weight > 0) {
                 openSaveFileDialog();
-            }
-            else {
+            } else {
                 toastMessage = getString(R.string.toast_saving_warning);
                 Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
             }
-        }
-        else if (itemId == R.id.nav_rate) {
+        } else if (itemId == R.id.nav_rate) {
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + PACKAGE_NAME)));
             } catch (ActivityNotFoundException anfe) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + PACKAGE_NAME)));
             }
-        }
-        else if (itemId == R.id.nav_share) {
+        } else if (itemId == R.id.nav_share) {
             Intent shareIntent = new Intent();
             shareIntent.setAction(Intent.ACTION_SEND);
             shareIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=net.ddns.aribas.pizzadough");
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getText(R.string.app_name));
             shareIntent.setType("text/plain");
             startActivity(Intent.createChooser(shareIntent, getString(R.string.share)));
-        }
-        else if (itemId == R.id.nav_send) {
+        } else if (itemId == R.id.nav_send) {
             if (portions > 0
                     && portion_weight > 0
                     && total_weight > 0) {
@@ -611,17 +657,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
                 sendIntent.setType("text/plain");
                 startActivity(Intent.createChooser(sendIntent, null));
-            }
-            else {
+            } else {
                 toastMessage = getString(R.string.toast_send_warning);
                 Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
             }
-        }
-        else if (itemId == R.id.nav_remove_ads){
+        } else if (itemId == R.id.nav_remove_ads) {
             connectGooglePlayBilling();
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
 }

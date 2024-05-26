@@ -1,10 +1,9 @@
-package net.ddns.aribas.pizzadough;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.aribasadmetlla.pizzadough;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

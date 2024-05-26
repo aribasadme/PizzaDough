@@ -1,15 +1,6 @@
-package net.ddns.aribas.pizzadough;
+package com.aribasadmetlla.pizzadough;
 
 public class PizzaDough {
-    public enum WeightUnit {
-        GRAM,
-        OUNCE
-    }
-    public enum VolumeUnit {
-        MILLILITRE,
-        FLUID_OUNCE
-    }
-
     private int mFlour;
     private int mWater;
     private int mSalt;
@@ -17,7 +8,6 @@ public class PizzaDough {
     private int mOil;
     private WeightUnit mWeightUnit;
     private VolumeUnit mVolumeUnit;
-
     public PizzaDough(int flour, int water, int salt, float yeast, int oil) {
         this.mFlour = flour;
         this.mWater = water;
@@ -28,7 +18,6 @@ public class PizzaDough {
         this.mVolumeUnit = VolumeUnit.MILLILITRE;
 
     }
-
     public PizzaDough(int flour, int water, int salt, float yeast) {
         this(flour, water, salt, yeast, 0);
     }
@@ -89,11 +78,21 @@ public class PizzaDough {
         this.mVolumeUnit = volumeUnit;
     }
 
-    public int calcDoughWeight(){
+    public int calcDoughWeight() {
         return mFlour + mWater;
     }
 
     public float calcHydration() {
-        return ((float) mWater /   mFlour) * 100;
+        return ((float) mWater / mFlour) * 100;
+    }
+
+    public enum WeightUnit {
+        GRAM,
+        OUNCE
+    }
+
+    public enum VolumeUnit {
+        MILLILITRE,
+        FLUID_OUNCE
     }
 }

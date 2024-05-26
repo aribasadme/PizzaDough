@@ -1,15 +1,13 @@
-package net.ddns.aribas.pizzadough;
+package com.aribasadmetlla.pizzadough;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 public class Preferences {
-    private final Context context;
     private final SharedPreferences sharedPref;
     private final SharedPreferences.Editor editor;
 
     public Preferences(Context context) {
-        this.context = context;
         sharedPref = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE);
         editor = sharedPref.edit();
     }
@@ -26,11 +24,6 @@ public class Preferences {
 
     public void setBoolean(String key, boolean value) {
         editor.putBoolean(key, value);
-        editor.apply();
-    }
-
-    public void setRemoveAd(int value) {
-        editor.putInt("RemoveAd", value);
         editor.apply();
     }
 
@@ -54,5 +47,10 @@ public class Preferences {
     public int getRemoveAd() {
         //int defaultValue = getResources().getInteger("RemoveAd");
         return sharedPref.getInt("RemoveAd", 0);
+    }
+
+    public void setRemoveAd(int value) {
+        editor.putInt("RemoveAd", value);
+        editor.apply();
     }
 }

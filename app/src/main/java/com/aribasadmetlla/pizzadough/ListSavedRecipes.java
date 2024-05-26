@@ -1,14 +1,13 @@
-package net.ddns.aribas.pizzadough;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.aribasadmetlla.pizzadough;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -86,7 +85,7 @@ public class ListSavedRecipes extends AppCompatActivity {
         });
     }
 
-    public void callViewRecipe(int position)  {
+    public void callViewRecipe(int position) {
         Bundle bundle = new Bundle();
         bundle.putString("FILE_NAME", mSavedRecipeList.get(position).getFileName());
         Intent viewRecipeIntent = new Intent(this, ViewSavedRecipe.class);
@@ -94,7 +93,7 @@ public class ListSavedRecipes extends AppCompatActivity {
         startActivity(viewRecipeIntent);
     }
 
-    public void sendFile(int position){
+    public void sendFile(int position) {
         Intent sendIntent = new Intent();
         FileInputStream fis = null;
         try {
@@ -125,14 +124,14 @@ public class ListSavedRecipes extends AppCompatActivity {
     }
 
     public void deleteFile(int position) {
-        File file = new File(getFilesDir(),  mSavedRecipeList.get(position).getFileName());
+        File file = new File(getFilesDir(), mSavedRecipeList.get(position).getFileName());
         if (deleteFile(file.getName())) {
             mSavedRecipeList.remove(position);
             mAdapter.notifyItemRemoved(position);
         }
     }
 
-    public void createMenuTitles(){
+    public void createMenuTitles() {
         mMenuTitles = new String[2];
         mMenuTitles[0] = getString(R.string.send);
         mMenuTitles[1] = getString(R.string.delete);

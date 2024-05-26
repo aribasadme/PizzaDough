@@ -54,7 +54,8 @@
                 android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewPortions" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewPortions"
+                android:autofillHints="" />
 
             <TextView
                 android:id="@+id/textViewPortionWeight"
@@ -81,7 +82,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewPortionWeight" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewPortionWeight"
+                android:autofillHints="" />
 
             <!-- Hydration selection -->
             <TextView

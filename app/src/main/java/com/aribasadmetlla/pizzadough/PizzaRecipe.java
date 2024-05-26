@@ -1,26 +1,14 @@
-package net.ddns.aribas.pizzadough;
+package com.aribasadmetlla.pizzadough;
 
 public class PizzaRecipe {
 
-    public enum WeightUnit{
-        GRAM,
-        KILOGRAM,
-        OUNCE
-    }
-    public enum VolumeUnit {
-        MILLILITRE,
-        LITRE,
-        FLUID_OUNCE
-    }
-
+    private final WeightUnit mWeightUnit;
+    private final VolumeUnit mVolumeUnit;
     private int mFlour;
     private float mHydration;
     private float mYeast;
     private int mSalt;
     private int mOil;
-    private WeightUnit mWeightUnit;
-    private VolumeUnit mVolumeUnit;
-
     public PizzaRecipe(int flour, float hydration) {
         this.mFlour = flour;
         this.mHydration = hydration;
@@ -69,10 +57,10 @@ public class PizzaRecipe {
         this.mOil = mOil;
     }
 
-    public double convertWeightUnits(double quantity, WeightUnit unitFrom, WeightUnit unitTo){
-        switch (unitFrom){
+    public double convertWeightUnits(double quantity, WeightUnit unitFrom, WeightUnit unitTo) {
+        switch (unitFrom) {
             case GRAM:
-                switch (unitTo){
+                switch (unitTo) {
                     case KILOGRAM:
                         return quantity / 1000;
                     case OUNCE:
@@ -81,7 +69,7 @@ public class PizzaRecipe {
                         return quantity;
                 }
             case KILOGRAM:
-                switch (unitTo){
+                switch (unitTo) {
                     case GRAM:
                         return quantity * 1000;
                     case OUNCE:
@@ -90,7 +78,7 @@ public class PizzaRecipe {
                         return quantity;
                 }
             case OUNCE:
-                switch (unitTo){
+                switch (unitTo) {
                     case GRAM:
                         return quantity * 28.3495;
                     case KILOGRAM:
@@ -101,5 +89,17 @@ public class PizzaRecipe {
             default:
                 return quantity;
         }
+    }
+
+    public enum WeightUnit {
+        GRAM,
+        KILOGRAM,
+        OUNCE
+    }
+
+    public enum VolumeUnit {
+        MILLILITRE,
+        LITRE,
+        FLUID_OUNCE
     }
 }

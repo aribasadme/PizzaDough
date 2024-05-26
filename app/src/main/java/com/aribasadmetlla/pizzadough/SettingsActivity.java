@@ -1,8 +1,8 @@
-package net.ddns.aribas.pizzadough;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.aribasadmetlla.pizzadough;
 
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SettingsActivity extends AppCompatActivity {
 

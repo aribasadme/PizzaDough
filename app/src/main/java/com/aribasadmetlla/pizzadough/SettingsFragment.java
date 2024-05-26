@@ -1,4 +1,4 @@
-package net.ddns.aribas.pizzadough;
+package com.aribasadmetlla.pizzadough;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         savedRecipesPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Intent savedRecipesListIntent = new Intent(getActivity(),ListSavedRecipes.class);
+                Intent savedRecipesListIntent = new Intent(getActivity(), ListSavedRecipes.class);
                 startActivity(savedRecipesListIntent);
                 return true;
             }

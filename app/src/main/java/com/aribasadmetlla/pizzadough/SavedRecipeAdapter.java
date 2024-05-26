@@ -1,4 +1,4 @@
-package net.ddns.aribas.pizzadough;
+package com.aribasadmetlla.pizzadough;
 
 import android.util.Log;
 import android.view.ContextMenu;
@@ -9,22 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.SavedRecipeViewHolder> {
     private static final String LOG_TAG = SavedRecipeAdapter.class.getSimpleName();
-
-    private final ArrayList<SavedRecipeItem> mSavedRecipeList;
     private static String[] mMenuTitles;
     private static OnItemClickListener mClickListener;
+    private final ArrayList<SavedRecipeItem> mSavedRecipeList;
 
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-        void onSendClick(int position);
-        void onDeleteClick(int position);
+    public SavedRecipeAdapter(ArrayList<SavedRecipeItem> savedRecipeList) {
+        mSavedRecipeList = savedRecipeList;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -33,10 +30,34 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
 
     public void setMenuTitles(String[] titles) {
         mMenuTitles = titles;
-    };
+    }
 
-    public SavedRecipeAdapter(ArrayList<SavedRecipeItem> savedRecipeList) {
-        mSavedRecipeList = savedRecipeList;
+    @NonNull
+    @Override
+    public SavedRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_recipe_item, parent, false);
+        return new SavedRecipeViewHolder(v, mMenuTitles);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SavedRecipeViewHolder holder, int position) {
+        SavedRecipeItem currentItem = mSavedRecipeList.get(position);
+        String fileName = currentItem.getFileName();
+        holder.mSavedRecipeName.setText(fileName.substring(0, fileName.lastIndexOf(".txt")));
+        holder.mSavedRecipeDate.setText(currentItem.getDateSaved());
+    }
+
+    @Override
+    public int getItemCount() {
+        return mSavedRecipeList.size();
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+
+        void onSendClick(int position);
+
+        void onDeleteClick(int position);
     }
 
     public static class SavedRecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
@@ -81,7 +102,7 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     Log.i(LOG_TAG, "onMenuItemClick");
-                    switch (menuItem.getItemId()){
+                    switch (menuItem.getItemId()) {
                         case 1:
                             // Send
                             mClickListener.onSendClick(position);
@@ -95,26 +116,6 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             }
             return false;
         }
-    }
-
-    @NonNull
-    @Override
-    public SavedRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_recipe_item, parent, false);
-        return new SavedRecipeViewHolder(v, mMenuTitles);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull SavedRecipeViewHolder holder, int position) {
-        SavedRecipeItem currentItem = mSavedRecipeList.get(position);
-        String fileName = currentItem.getFileName();
-        holder.mSavedRecipeName.setText(fileName.substring(0, fileName.lastIndexOf(".txt")));
-        holder.mSavedRecipeDate.setText(currentItem.getDateSaved());
-    }
-
-    @Override
-    public int getItemCount() {
-        return mSavedRecipeList.size();
     }
 
 }

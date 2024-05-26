@@ -6,7 +6,7 @@
     <string name="portions">Dough balls</string>
     <string name="portion_weight">Dough Ball Weight (grams)</string>
     <string name="hydration">Hydration</string>
-    <string name="initial_wight_portion" translatable="false">280</string>
+    <string name="initial_wight_portion" translatable="false">0</string>
     <string name="zero_num" translatable="false">0</string>
     <string name="zero_num_percentage" translatable="false">0%</string>
     <string name="zero_decimal" translatable="false">0.0</string>

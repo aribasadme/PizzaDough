@@ -1,4 +1,4 @@
-package net.ddns.aribas.pizzadough;
+package com.aribasadmetlla.pizzadough;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,7 +13,7 @@ public class SavedRecipeItem {
         this.mDateSaved = date;
     }
 
-    public  String getFileName() {
+    public String getFileName() {
         return mFileName;
     }
 
