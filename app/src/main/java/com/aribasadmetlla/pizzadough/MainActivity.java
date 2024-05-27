@@ -22,6 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.activity.OnBackPressedCallback;
 
 import com.android.billingclient.api.AcknowledgePurchaseParams;
 import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
@@ -285,6 +286,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     String toastMessage = getString(R.string.toast_hydration_warning);
                     Toast.makeText(MainActivity.this, toastMessage,
                             Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Back is pressed... Finishing the activity
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                } else {
+                    launchInAppRating();
+                    finish();
                 }
             }
         });
@@ -558,16 +572,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 });
             }
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            launchInAppRating();
-            super.onBackPressed();
         }
     }
 
