@@ -373,14 +373,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fos.write(sb.toString().getBytes());
                 String toastMessage = getString(R.string.toast_saving, getFilesDir() + "/" + fileName);
                 Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+                Log.i(LOG_TAG, "File saved successfully");
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(LOG_TAG, "Error saving file: " + e.getMessage());
+                Toast.makeText(this, "Error saving file", Toast.LENGTH_SHORT).show();
             } finally {
                 if (fos != null) {
                     try {
                         fos.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Log.e(LOG_TAG, "Error closing file: " + e.getMessage());
                     }
                 }
             }
@@ -433,6 +435,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onBillingServiceDisconnected() {
+                Log.i(LOG_TAG, "Reconnecting....");
                 connectGooglePlayBilling();
             }
         });
