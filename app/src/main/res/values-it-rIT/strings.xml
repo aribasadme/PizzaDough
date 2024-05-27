@@ -37,5 +37,8 @@
     <string name="loaded_recipe">Ricetta salvata</string>
     <string name="send_recipe">Invia ricetta</string>
     <string name="recipe_name_required">Nome ricetta*</string>
-    <string name="remove_adds">Remove adds</string>
+    <string name="remove_adds">Togli la pubblicità</string>
+    <string name="about">A riguardo</string>
+    <string name="other">Altro</string>
+    <string name="version_s">Versione</string>
 </resources>

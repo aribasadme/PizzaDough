@@ -17,6 +17,7 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ListSavedRecipes" />
         <activity android:name=".ViewSavedRecipe" />
+        <activity android:name=".AboutActivity" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"

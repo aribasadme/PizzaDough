@@ -37,5 +37,8 @@
     <string name="loaded_recipe">Recepta desada</string>
     <string name="send_recipe">Envia recepta</string>
     <string name="recipe_name_required">Nom recepta*</string>
-    <string name="remove_adds">Remove adds</string>
+    <string name="remove_adds">Llevar anuncis</string>
+    <string name="about">Quant a</string>
+    <string name="other">Altres</string>
+    <string name="version_s">Versió</string>
 </resources>

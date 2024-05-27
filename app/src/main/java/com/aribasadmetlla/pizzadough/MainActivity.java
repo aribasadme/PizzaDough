@@ -670,6 +670,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         } else if (itemId == R.id.nav_remove_ads) {
             connectGooglePlayBilling();
+        } else if (itemId == R.id.nav_about) {
+            Intent aboutIntent = new Intent(this, AboutActivity.class);
+            startActivity(aboutIntent);
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

@@ -48,4 +48,7 @@
     <string name="cancel">Cancel</string>
     <string name="loaded_recipe">Loaded recipe</string>
     <string name="remove_adds">Remove adds</string>
+    <string name="about">About</string>
+    <string name="other">Other</string>
+    <string name="version_s">Version</string>
 </resources>
