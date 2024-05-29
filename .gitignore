@@ -9,6 +9,9 @@
 # Java class files
 *.class
 
+# Example files
+Example*.java
+
 # Built native files (uncomment if you build your own)
 # *.o
 # *.so
