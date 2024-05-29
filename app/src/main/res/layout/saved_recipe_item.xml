@@ -10,8 +10,8 @@
         android:layout_margin="4dp">
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
             android:padding="2dp"
             android:id="@+id/pizzaIcon"
             android:src="@drawable/ic_pizza"
