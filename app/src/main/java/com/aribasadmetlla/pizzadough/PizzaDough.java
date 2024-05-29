@@ -11,6 +11,10 @@ public class PizzaDough {
     private Measure flour, oil, salt, water, yeast;
     private Measure weight;
 
+    public PizzaDough() {
+        this(0, 0, 0, 0, 0);
+    }
+
     public PizzaDough(int flour, int oil, int salt, int water, float yeast) {
         this.flour = new Measure(flour, GRAM);
         this.water = new Measure(water, MILLILITER);
