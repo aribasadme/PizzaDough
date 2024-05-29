@@ -1,14 +1,20 @@
 plugins {
     id "com.android.application"
 }
+
+def versionMajor = 2
+def versionMinor = 3
+def versionPatch = 0
+def versionBuild = 0
+
 android {
     compileSdk 34
     defaultConfig {
         applicationId "net.ddns.aribas.pizzadough"
         minSdkVersion 30
         targetSdkVersion 34
-        versionCode 12
-        versionName "2.3.0"
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
