@@ -17,7 +17,7 @@
     <string name="toast_yeast_is">Lievito al : %.1f%%</string>
     <string name="toast_salt_is">Sale al : %.1f%%</string>
     <string name="toast_oil_is">Olio al : %.1f%%</string>
-    <string name="toast_hydration_warning">L\'idratazione deve essere maggiore di 0 e minore di 100</string>
+    <string name="toast_hydration_warning">L\'idratazione deve essere maggiore di 0</string>
     <string name="settings">Impostazioni</string>
     <string name="share">Condividi</string>
     <string name="send">Invia</string>

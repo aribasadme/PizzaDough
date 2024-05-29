@@ -6,7 +6,7 @@
     <string name="portions">Dough balls</string>
     <string name="portion_weight">Dough Ball Weight (grams)</string>
     <string name="hydration">Hydration</string>
-    <string name="initial_wight_portion" translatable="false">0</string>
+    <string name="initial_wight_portion" translatable="false">280</string>
     <string name="zero_num" translatable="false">0</string>
     <string name="zero_num_percentage" translatable="false">0%</string>
     <string name="zero_decimal" translatable="false">0.0</string>
@@ -22,7 +22,7 @@
     <string name="oil_grams">Oil (grams)</string>
     <string name="calculate">CALCULATE</string>
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-1453187186238733/1858985384</string>
-    <string name="toast_hydration_warning">Hydration must be greater than 0 and less than 100</string>
+    <string name="toast_hydration_warning">Hydration must be greater than 0</string>
     <string name="toast_hydration_is">Hydration is : %d%%</string>
     <string name="toast_yeast_is">Yeast is : %.1f%%</string>
     <string name="toast_salt_is">Salt is : %.1f%%</string>
