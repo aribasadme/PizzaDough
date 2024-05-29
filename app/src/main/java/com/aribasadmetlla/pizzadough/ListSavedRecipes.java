@@ -21,9 +21,7 @@ public class ListSavedRecipes extends AppCompatActivity {
     private static final String LOG_TAG = ListSavedRecipes.class.getSimpleName();
 
     private ArrayList<SavedRecipeItem> mSavedRecipeList;
-    private RecyclerView mRecyclerView;
     private SavedRecipeAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private String[] mMenuTitles;
 
     @Override
@@ -35,11 +33,16 @@ public class ListSavedRecipes extends AppCompatActivity {
         buildRecyclerView();
     }
 
-    public void listFiles(Context context, ArrayList<File> fl) {
-        for (String fn : context.fileList()) {
-            if (fn.contains(".txt")) {
-                Log.i(LOG_TAG, fn);
-                fl.add(new File(this.getFilesDir(), fn));
+    public void listFiles(Context context, ArrayList<File> fileList) {
+        if (context.fileList().length == 0) {
+            Log.e(LOG_TAG, "No files found");
+        } else {
+            Log.i(LOG_TAG, "Found files:");
+            for (String fileName : context.fileList()) {
+                if (fileName.contains(".txt")) {
+                    Log.i(LOG_TAG, "- " + fileName);
+                    fileList.add(new File(this.getFilesDir(), fileName));
+                }
             }
         }
     }
@@ -57,9 +60,9 @@ public class ListSavedRecipes extends AppCompatActivity {
     }
 
     public void buildRecyclerView() {
-        mRecyclerView = findViewById(R.id.recyclerView);
+        RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mAdapter = new SavedRecipeAdapter(mSavedRecipeList);
 
         mRecyclerView.setLayoutManager(mLayoutManager);

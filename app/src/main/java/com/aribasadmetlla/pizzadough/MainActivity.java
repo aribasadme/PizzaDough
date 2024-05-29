@@ -51,6 +51,7 @@ import com.google.android.play.core.tasks.OnCompleteListener;
 import com.google.android.play.core.tasks.Task;
 import com.google.common.collect.ImmutableList;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -258,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 float yeast, salt, oil;
 
                 portions = (editPortions.getText().toString().isEmpty()) ? 0 : Integer.parseInt(editPortions.getText().toString());
-                portion_weight = (editWeightPortion.getText().toString().isEmpty()) ? 0 : Integer.parseInt(editWeightPortion.getText().toString());
+                portion_weight = (editWeightPortion.getText().toString().isEmpty()) ? 280 : Integer.parseInt(editWeightPortion.getText().toString());
 
                 yeast_per = getConvertedValue(yeastSB);
                 salt_per = getConvertedValue(saltSB);
@@ -266,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 total_weight = portions * portion_weight;
 
-                if (hydration > 0 && hydration <= 100) {
+                if (hydration > 0) {
                     flour = total_weight / (1 + hydration / (float) 100);
                     water = total_weight - flour;
 
@@ -282,6 +283,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     editSalt.setText(String.valueOf(Math.round(salt)));
                     editOil.setText(String.valueOf(Math.round(oil)));
 
+                    Log.i(LOG_TAG, "Flour: " + flour + " | Water: " + water + " | Yeast: " + yeast + " | Salt: " + salt + " | Oil: " + oil);
                 } else {
                     String toastMessage = getString(R.string.toast_hydration_warning);
                     Toast.makeText(MainActivity.this, toastMessage,
@@ -378,28 +380,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void saveFile(String fileName) {
-        if (!fileName.isEmpty()) {
+    public void saveFile(File file) {
+        try {
+            FileOutputStream outputStream = new FileOutputStream(file);
+
+            Log.i(LOG_TAG, "Saving file " + file.getAbsolutePath());
+
             StringBuilder sb = writeRecipe();
-            FileOutputStream fos = null;
-            try {
-                fos = getApplicationContext().openFileOutput(fileName.concat(".txt"), Context.MODE_PRIVATE);
-                fos.write(sb.toString().getBytes());
-                String toastMessage = getString(R.string.toast_saving, getFilesDir() + "/" + fileName);
-                Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
-                Log.i(LOG_TAG, "File saved successfully");
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "Error saving file: " + e.getMessage());
-                Toast.makeText(this, "Error saving file", Toast.LENGTH_SHORT).show();
-            } finally {
-                if (fos != null) {
-                    try {
-                        fos.close();
-                    } catch (IOException e) {
-                        Log.e(LOG_TAG, "Error closing file: " + e.getMessage());
-                    }
-                }
-            }
+            outputStream.write(sb.toString().getBytes());
+            outputStream.close();
+
+            Log.i(LOG_TAG, "File saved successfully");
+            Toast.makeText(this, "File saved successfully", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error saving file: " + e.getMessage());
+            Toast.makeText(this, "Error saving file", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -548,7 +543,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setProductDetailsParamsList(productDetailsParamsList)
                 .build();
 
-        // Launch the billing flow
         billingClient.launchBillingFlow(MainActivity.this, billingFlowParams);
     }
 

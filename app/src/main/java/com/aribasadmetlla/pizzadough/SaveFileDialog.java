@@ -13,17 +13,22 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import java.io.File;
+import java.util.Objects;
+
 public class SaveFileDialog extends AppCompatDialogFragment {
-    private EditText editFileName;
+    private EditText fileNameEditText;
     private SaveFileDialogListener listener;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.layout_save_dialog, null);
+
+        fileNameEditText = view.findViewById(R.id.editFileName);
 
         builder.setView(view)
                 .setTitle(getText(R.string.save_recipe))
@@ -36,12 +41,15 @@ public class SaveFileDialog extends AppCompatDialogFragment {
                 .setPositiveButton(getText(R.string.save), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String fileName = editFileName.getText().toString();
-                        listener.saveFile(fileName);
+                        String fileName = fileNameEditText.getText().toString();
+                        String filePath = requireActivity().getFilesDir() +
+                                "/" +
+                                fileName +
+                                ".txt";
+                        File file = new File(filePath);
+                        listener.saveFile(file);
                     }
                 });
-
-        editFileName = view.findViewById(R.id.editFileName);
 
         return builder.create();
     }
@@ -59,6 +67,6 @@ public class SaveFileDialog extends AppCompatDialogFragment {
     }
 
     public interface SaveFileDialogListener {
-        void saveFile(String fileName);
+        void saveFile(File file);
     }
 }
