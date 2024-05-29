@@ -1,98 +1,80 @@
 package com.aribasadmetlla.pizzadough;
 
+import android.icu.util.Measure;
+import android.icu.util.MeasureUnit;
+
+import static android.icu.util.MeasureUnit.GRAM;
+import static android.icu.util.MeasureUnit.POUND;
+import static android.icu.util.MeasureUnit.MILLILITER;
+
 public class PizzaDough {
-    private int mFlour;
-    private int mWater;
-    private int mSalt;
-    private float mYeast;
-    private int mOil;
-    private WeightUnit mWeightUnit;
-    private VolumeUnit mVolumeUnit;
-    public PizzaDough(int flour, int water, int salt, float yeast, int oil) {
-        this.mFlour = flour;
-        this.mWater = water;
-        this.mSalt = salt;
-        this.mYeast = yeast;
-        this.mOil = oil;
-        this.mWeightUnit = WeightUnit.GRAM;
-        this.mVolumeUnit = VolumeUnit.MILLILITRE;
+    private Measure flour, oil, salt, water, yeast;
+    private Measure weight;
 
-    }
-    public PizzaDough(int flour, int water, int salt, float yeast) {
-        this(flour, water, salt, yeast, 0);
+    public PizzaDough(int flour, int oil, int salt, int water, float yeast) {
+        this.flour = new Measure(flour, GRAM);
+        this.water = new Measure(water, MILLILITER);
+        this.salt = new Measure(salt, GRAM);
+        this.yeast = new Measure(yeast, GRAM);
+        this.oil = new Measure(oil, GRAM);
+        this.weight = new Measure(flour + water + salt + oil + yeast, GRAM);
     }
 
-    public int getFlour() {
-        return mFlour;
+    public Measure getFlour() {
+        return flour;
     }
 
-    public void setFlour(int mFlour) {
-        this.mFlour = mFlour;
+    public void setFlour(int flour, MeasureUnit unit) {
+        this.flour = new Measure(flour, unit);
     }
 
-    public int getWater() {
-        return mWater;
+    public Measure getWater() {
+        return water;
     }
 
-    public void setWater(int mWater) {
-        this.mWater = mWater;
+    public void setWater(int water, MeasureUnit unit) {
+        this.water = new Measure(water, unit);
     }
 
-    public int getSalt() {
-        return mSalt;
+    public Measure getSalt() {
+        return salt;
     }
 
-    public void setSalt(int mSalt) {
-        this.mSalt = mSalt;
+    public void setSalt(int salt, MeasureUnit unit) {
+        this.salt = new Measure(salt, unit);
     }
 
-    public float getYeast() {
-        return mYeast;
+    public Measure getYeast() {
+        return yeast;
     }
 
-    public void setYeast(float mYeast) {
-        this.mYeast = mYeast;
+    public void setYeast(float yeast, MeasureUnit unit) {
+        this.yeast = new Measure(yeast, unit);
     }
 
-    public int getOil() {
-        return mOil;
+    public Measure getOil() {
+        return oil;
     }
 
-    public void setOil(int mOil) {
-        this.mOil = mOil;
+    public void setOil(int oil, MeasureUnit unit) {
+        this.oil = new Measure(oil, unit);
     }
 
-    public WeightUnit getWeightUnit() {
-        return mWeightUnit;
-    }
-
-    public void setWeightUnit(WeightUnit weightUnit) {
-        this.mWeightUnit = weightUnit;
-    }
-
-    public VolumeUnit getVolumeUnit() {
-        return mVolumeUnit;
-    }
-
-    public void setVolumeUnit(VolumeUnit volumeUnit) {
-        this.mVolumeUnit = volumeUnit;
-    }
-
-    public int calcDoughWeight() {
-        return mFlour + mWater;
-    }
+    public Measure getWeight() { return weight; }
 
     public float calcHydration() {
-        return ((float) mWater / mFlour) * 100;
+        return ((float) water.getNumber().intValue() / flour.getNumber().intValue()) * 100;
     }
 
-    public enum WeightUnit {
-        GRAM,
-        OUNCE
+    public void convertToPounds() {
+        if (weight.getUnit() != POUND && weight.getUnit() == GRAM) {
+            this.weight = new Measure(weight.getNumber().doubleValue() * 0.002204623, POUND);
+        }
     }
 
-    public enum VolumeUnit {
-        MILLILITRE,
-        FLUID_OUNCE
+    public void convertToGrams() {
+        if (weight.getUnit() != GRAM && weight.getUnit() == POUND) {
+            this.weight = new Measure(weight.getNumber().doubleValue() * 453.59237, GRAM);
+        }
     }
 }
