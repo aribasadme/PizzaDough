@@ -14,7 +14,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import java.io.File;
-import java.util.Objects;
 
 public class SaveFileDialog extends AppCompatDialogFragment {
     private EditText fileNameEditText;
