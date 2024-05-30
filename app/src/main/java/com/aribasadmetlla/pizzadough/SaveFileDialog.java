@@ -44,7 +44,7 @@ public class SaveFileDialog extends AppCompatDialogFragment {
                         String fileName = fileNameEditText.getText().toString();
                         String filePath = requireActivity().getFilesDir() +
                                 "/" +
-                                fileName +
+                                fileName.trim() +
                                 ".txt";
                         File file = new File(filePath);
                         listener.saveFile(file);
