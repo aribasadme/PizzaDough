@@ -5,7 +5,7 @@ plugins {
 def versionMajor = 2
 def versionMinor = 3
 def versionPatch = 0
-def versionBuild = 0
+def versionBuild = 1
 
 android {
     compileSdk 34
@@ -16,8 +16,16 @@ android {
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "int", "VERSION_MAJOR", "${versionMajor}"
+        buildConfigField "int", "VERSION_MINOR", "${versionMinor}"
+        buildConfigField "int", "VERSION_PATCH", "${versionPatch}"
+        buildConfigField "int", "VERSION_BUILD", "${versionBuild}"
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+        }
         release {
             minifyEnabled true
             shrinkResources true
