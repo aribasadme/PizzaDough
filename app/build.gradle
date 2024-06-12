@@ -4,8 +4,8 @@ plugins {
 
 def versionMajor = 2
 def versionMinor = 3
-def versionPatch = 0
-def versionBuild = 1
+def versionPatch = 1
+def versionBuild = 0
 
 android {
     compileSdk 34
@@ -55,13 +55,13 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'com.google.android.gms:play-services-ads:23.1.0'
-    implementation 'com.google.android.gms:play-services-location:21.2.0'
-    implementation 'com.google.android.play:core:1.10.3'
+    implementation 'com.google.android.gms:play-services-location:21.3.0'
+    implementation 'com.google.android.play:review:2.0.1'
     implementation 'com.google.firebase:firebase-ads:23.1.0'
-    implementation 'com.google.firebase:firebase-analytics:22.0.0'
+    implementation 'com.google.firebase:firebase-analytics:22.0.1'
     implementation 'com.google.guava:guava:33.2.0-jre'
     implementation 'com.android.billingclient:billing:7.0.0'
     testImplementation "org.mockito:mockito-core:5.11.0"

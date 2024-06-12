@@ -14,6 +14,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +22,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.activity.OnBackPressedCallback;
 
 import com.android.billingclient.api.AcknowledgePurchaseParams;
 import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
@@ -42,12 +42,13 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.play.core.review.ReviewException;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
-import com.google.android.play.core.tasks.OnCompleteListener;
-import com.google.android.play.core.tasks.Task;
+import com.google.android.play.core.review.model.ReviewErrorCode;
 import com.google.common.collect.ImmutableList;
 
 import java.io.File;
@@ -67,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private BillingClient billingClient;
     private EditText editPortions, editWeightPortion;
     private EditText editFlour, editWater, editYeast, editSalt, editOil;
-    private ReviewManager mReviewManager;
     private TextView hydrationPercentTextView, yeastPercentTextView, saltPercentTextView, oilPercentTextView;
 
     private int portions = 0, portion_weight = 0, total_weight = 0;
@@ -136,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editOil = findViewById(R.id.editOil);
 
         hydrationPercentTextView = findViewById(R.id.hydrationPercentTextView);
-        //private ReviewInfo reviewInfo;
         SeekBar hydrationSeekBar = findViewById(R.id.hydrationSeekBar);
         yeastPercentTextView = findViewById(R.id.yeastPercentTextView);
         SeekBar yeastSeekBar = findViewById(R.id.yeastSeekBar);
@@ -400,32 +399,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // Helper function to call In App Rating
     public void launchInAppRating() {
         // Replace FakeReviewManager for testing
-        mReviewManager = ReviewManagerFactory.create(MainActivity.this);
-        Task<ReviewInfo> request = mReviewManager.requestReviewFlow();
-        request.addOnCompleteListener(new OnCompleteListener<ReviewInfo>() {
-            @Override
-            public void onComplete(@NonNull Task<ReviewInfo> task) {
-                if (task.isSuccessful()) {
-                    // We can get the ReviewInfo object
-                    ReviewInfo reviewInfo = task.getResult();
-                    Task<Void> flow = mReviewManager.launchReviewFlow(MainActivity.this, reviewInfo);
-                    flow.addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            // The flow has finished. The API does not indicate whether the user
-                            // reviewed or not, or even whether the review dialog was shown. Thus, no
-                            // matter the result, we continue our app flow.
-                            if (task.isSuccessful()) {
-                                // Toast.makeText(MainActivity.this, "In App Rating complete", Toast.LENGTH_SHORT).show();
-                                Log.i(LOG_TAG, "In App Rating complete");
-                            }
-                        }
-                    });
-                } else {
-                    // There was some problem, continue regardless of the result.
-                    // Toast.makeText(MainActivity.this, "In App Rating failure: requestReviewFlow", Toast.LENGTH_SHORT).show();
-                    Log.i(LOG_TAG, "In App Rating failure: requestReviewFlow");
-                }
+        // ReviewManager manager = new FakeReviewManager(this);
+        ReviewManager manager = ReviewManagerFactory.create(this);
+        Task<ReviewInfo> request = manager.requestReviewFlow();
+        request.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.i(LOG_TAG, "requestReviewFlow: Success");
+                ReviewInfo reviewInfo = task.getResult();
+                Task<Void> flow = manager.launchReviewFlow(this, reviewInfo);
+                flow.addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                        Log.i(LOG_TAG, "launchReviewFlow: Success");
+                    }
+                });
+            } else {
+                @ReviewErrorCode int reviewErrorCode = ((ReviewException) task.getException()).getErrorCode();
+                Log.e(LOG_TAG, "requestReviewFlow: Failed. Error Code: " + reviewErrorCode);
             }
         });
     }
