@@ -400,13 +400,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void launchInAppRating() {
         // Replace FakeReviewManager for testing
         // ReviewManager manager = new FakeReviewManager(this);
-        ReviewManager manager = ReviewManagerFactory.create(this);
+        ReviewManager manager = ReviewManagerFactory.create(MainActivity.this);
         Task<ReviewInfo> request = manager.requestReviewFlow();
         request.addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Log.i(LOG_TAG, "requestReviewFlow: Success");
                 ReviewInfo reviewInfo = task.getResult();
-                Task<Void> flow = manager.launchReviewFlow(this, reviewInfo);
+                Task<Void> flow = manager.launchReviewFlow(MainActivity.this, reviewInfo);
                 flow.addOnCompleteListener(task1 -> {
                     if (task1.isSuccessful()) {
                         Log.i(LOG_TAG, "launchReviewFlow: Success");
