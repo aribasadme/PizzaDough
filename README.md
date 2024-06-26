@@ -1,3 +1,4 @@
+![GitHub Release](https://img.shields.io/github/v/release/aribasadme/PizzaDough)
 # Pizza Dough Calculator
 > Please, consider supporting my work
 
