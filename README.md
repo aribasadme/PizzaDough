@@ -1,4 +1,8 @@
+![GitHub Release](https://img.shields.io/github/v/release/aribasadme/PizzaDough)
 # Pizza Dough Calculator
+> Please, consider supporting my work
+
+<a href="https://liberapay.com/aribasadme/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
 
 This Android application helps you calculate the ingredients and hydration for your perfect pizza
 dough.
