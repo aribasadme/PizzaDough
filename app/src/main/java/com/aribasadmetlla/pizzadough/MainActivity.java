@@ -1,5 +1,7 @@
 package com.aribasadmetlla.pizzadough;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
+
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
@@ -36,6 +38,7 @@ import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.QueryProductDetailsParams;
+import com.android.billingclient.api.QueryProductDetailsResult;
 import com.android.billingclient.api.QueryPurchasesParams;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -124,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         billingClient = BillingClient.newBuilder(getApplicationContext())
                 .setListener(purchasesUpdatedListener)
                 .enablePendingPurchases(pendingPurchasesParams)
+                .enableAutoServiceReconnection()
                 .build();
 
         editPortions = findViewById(R.id.editPortions);
@@ -423,7 +427,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.i(LOG_TAG, "Starting connection to Google Play Billing service");
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
-            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
+            public void onBillingSetupFinished(BillingResult billingResult) {
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     Log.i(LOG_TAG, "Connected");
                     getProducts();
@@ -445,22 +449,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.i(LOG_TAG, String.format("Feature not supported. %s", billingResult));
         } else {
             Log.i(LOG_TAG, String.format("Feature is supported. %s", billingResult));
-            ImmutableList<QueryProductDetailsParams.Product> productList = ImmutableList.of(QueryProductDetailsParams.Product.newBuilder()
-                    .setProductId("remove_ads_id")
-                    .setProductType(BillingClient.ProductType.INAPP)
-                    .build());
 
-            QueryProductDetailsParams params = QueryProductDetailsParams.newBuilder()
-                    .setProductList(productList)
+            QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder()
+                    .setProductList(
+                            ImmutableList.of(
+                                    QueryProductDetailsParams.Product.newBuilder()
+                                            .setProductId("remove_ads_id")
+                                            .setProductType(BillingClient.ProductType.INAPP)
+                                            .build()))
                     .build();
 
             billingClient.queryProductDetailsAsync(
-                    params,
+                    queryProductDetailsParams,
                     new ProductDetailsResponseListener() {
-                        public void onProductDetailsResponse(@NonNull BillingResult billingResult, @NonNull List<ProductDetails> productDetailsList) {
+                        public void onProductDetailsResponse(BillingResult billingResult, QueryProductDetailsResult queryProductDetailsResult) {
                             // Process the result
                             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                                for (ProductDetails productDetails : productDetailsList) {
+                                for (ProductDetails productDetails : queryProductDetailsResult.getProductDetailsList()) {
                                     if (productDetails.getProductId().equals("remove_ads_id")) {
                                         launchPurchaseFlow(productDetails);
                                     }
