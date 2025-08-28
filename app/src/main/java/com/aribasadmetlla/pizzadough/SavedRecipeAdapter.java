@@ -49,7 +49,9 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
 
     @Override
     public int getItemCount() {
-        return mSavedRecipeList.size();
+        int listSize = mSavedRecipeList.size();
+        Log.d(LOG_TAG, "Got " + listSize + " items");
+        return listSize;
     }
 
     public interface OnItemClickListener {
@@ -81,7 +83,7 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             if (mClickListener != null) {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    Log.i(LOG_TAG, "onClick");
+                    Log.d(LOG_TAG, "onClick");
                     mClickListener.onItemClick(position);
                 }
             }
@@ -101,15 +103,17 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             if (mClickListener != null) {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    Log.i(LOG_TAG, "onMenuItemClick");
+                    Log.d(LOG_TAG, "onMenuItemClick");
                     switch (menuItem.getItemId()) {
                         case 1:
                             // Send
                             mClickListener.onSendClick(position);
+                            Log.d(LOG_TAG, "onSendClick");
                             return true;
                         case 2:
                             // Delete
                             mClickListener.onDeleteClick(position);
+                            Log.d(LOG_TAG, "onDeleteClick");
                             return true;
                     }
                 }
