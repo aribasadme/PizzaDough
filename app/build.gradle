@@ -42,7 +42,8 @@ android {
 
     packagingOptions { resources.excludes.add("META-INF/*") }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 }
 
@@ -54,20 +55,20 @@ dependencies {
     implementation 'androidx.test.ext:junit:1.2.1'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testImplementation "org.mockito:mockito-core:5.11.0"
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
     implementation "androidx.constraintlayout:constraintlayout:2.2.1"
     implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'com.google.android.gms:play-services-ads:24.4.0'
+    implementation 'com.google.android.gms:play-services-ads:24.5.0'
     implementation 'com.google.android.gms:play-services-location:21.3.0'
     implementation 'com.google.android.play:review:2.0.2'
     implementation 'com.google.firebase:firebase-ads:23.6.0'
-    implementation 'com.google.firebase:firebase-analytics:22.5.0'
-    implementation 'com.google.guava:guava:33.2.0-jre'
+    implementation 'com.google.firebase:firebase-analytics:23.0.0'
+    implementation 'com.google.guava:guava:33.4.8-jre'
     implementation 'com.android.billingclient:billing:8.0.0'
-    testImplementation "org.mockito:mockito-core:5.11.0"
     androidTestImplementation "org.mockito:mockito-android:5.11.0"
 }
 
