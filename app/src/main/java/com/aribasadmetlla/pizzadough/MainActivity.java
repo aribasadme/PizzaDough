@@ -1,7 +1,5 @@
 package com.aribasadmetlla.pizzadough;
 
-import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
-
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
@@ -66,7 +64,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     public static String PACKAGE_NAME;
     private AdView mAdView;
-    private DrawerLayout mDrawerLayout;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
     private Preferences preferences;
     private BillingClient billingClient;
     private EditText editPortions, editWeightPortion;
@@ -84,16 +84,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_draw_open, R.string.navigation_draw_close);
-        mDrawerLayout.addDrawerListener(toggle);
+        drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         preferences = new Preferences(getApplicationContext());
@@ -297,11 +297,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                // Back is pressed... Finishing the activity
-                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                // Check if the drawer is open
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    // Close the drawer if it's open
+                    drawerLayout.closeDrawer(GravityCompat.START);
                 } else {
                     launchInAppRating();
+                    // Back is pressed... Finishing the activity
                     finish();
                 }
             }
@@ -661,7 +663,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent aboutIntent = new Intent(this, AboutActivity.class);
             startActivity(aboutIntent);
         }
-        mDrawerLayout.closeDrawer(GravityCompat.START);
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 }
