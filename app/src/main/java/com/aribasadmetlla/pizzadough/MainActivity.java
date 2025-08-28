@@ -59,8 +59,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        SaveFileDialog.SaveFileDialogListener {
+public class MainActivity extends AppCompatActivity implements SaveFileDialog.SaveFileDialogListener {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     public static String PACKAGE_NAME;
     private AdView mAdView;
@@ -89,12 +88,68 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_draw_open, R.string.navigation_draw_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        // Set a listener for when an item in the NavigationView is selected
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            // Called when an item in the NavigationView is selected.
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                String toastMessage;
+                int itemId = item.getItemId();
+                if (itemId == R.id.nav_settings) {
+                    Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                    startActivity(settingsIntent);
+                } else if (itemId == R.id.nav_save) {
+                    if (portions > 0
+                            && portion_weight > 0
+                            && total_weight > 0) {
+                        openSaveFileDialog();
+                    } else {
+                        toastMessage = getString(R.string.toast_saving_warning);
+                        Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+                    }
+                } else if (itemId == R.id.nav_rate) {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + PACKAGE_NAME)));
+                    } catch (ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + PACKAGE_NAME)));
+                    }
+                } else if (itemId == R.id.nav_share) {
+                    Intent shareIntent = new Intent();
+                    shareIntent.setAction(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=net.ddns.aribas.pizzadough");
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getText(R.string.app_name));
+                    shareIntent.setType("text/plain");
+                    startActivity(Intent.createChooser(shareIntent, getString(R.string.share)));
+                } else if (itemId == R.id.nav_send) {
+                    if (portions > 0
+                            && portion_weight > 0
+                            && total_weight > 0) {
+                        Intent sendIntent = new Intent();
+                        StringBuilder message = writeRecipe();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
+                        sendIntent.setType("text/plain");
+                        startActivity(Intent.createChooser(sendIntent, null));
+                    } else {
+                        toastMessage = getString(R.string.toast_send_warning);
+                        Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+                    }
+                } else if (itemId == R.id.nav_remove_ads) {
+                    connectGooglePlayBilling();
+                } else if (itemId == R.id.nav_about) {
+                    Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
+                    startActivity(aboutIntent);
+                }
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
 
         preferences = new Preferences(getApplicationContext());
 
@@ -612,58 +667,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mAdView.destroy();
         }
         super.onDestroy();
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        String toastMessage;
-        int itemId = item.getItemId();
-        if (itemId == R.id.nav_settings) {
-            Intent settingsIntent = new Intent(this, SettingsActivity.class);
-            startActivity(settingsIntent);
-        } else if (itemId == R.id.nav_save) {
-            if (portions > 0
-                    && portion_weight > 0
-                    && total_weight > 0) {
-                openSaveFileDialog();
-            } else {
-                toastMessage = getString(R.string.toast_saving_warning);
-                Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
-            }
-        } else if (itemId == R.id.nav_rate) {
-            try {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + PACKAGE_NAME)));
-            } catch (ActivityNotFoundException anfe) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + PACKAGE_NAME)));
-            }
-        } else if (itemId == R.id.nav_share) {
-            Intent shareIntent = new Intent();
-            shareIntent.setAction(Intent.ACTION_SEND);
-            shareIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=net.ddns.aribas.pizzadough");
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getText(R.string.app_name));
-            shareIntent.setType("text/plain");
-            startActivity(Intent.createChooser(shareIntent, getString(R.string.share)));
-        } else if (itemId == R.id.nav_send) {
-            if (portions > 0
-                    && portion_weight > 0
-                    && total_weight > 0) {
-                Intent sendIntent = new Intent();
-                StringBuilder message = writeRecipe();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
-                sendIntent.setType("text/plain");
-                startActivity(Intent.createChooser(sendIntent, null));
-            } else {
-                toastMessage = getString(R.string.toast_send_warning);
-                Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
-            }
-        } else if (itemId == R.id.nav_remove_ads) {
-            connectGooglePlayBilling();
-        } else if (itemId == R.id.nav_about) {
-            Intent aboutIntent = new Intent(this, AboutActivity.class);
-            startActivity(aboutIntent);
-        }
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
     }
 }
