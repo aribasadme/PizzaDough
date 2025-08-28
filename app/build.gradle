@@ -4,15 +4,15 @@ plugins {
 
 def versionMajor = 2
 def versionMinor = 3
-def versionPatch = 1
-def versionBuild = 2
+def versionPatch = 2
+def versionBuild = 0
 
 android {
-    compileSdk 35
+    compileSdk = 35
     defaultConfig {
-        applicationId "net.ddns.aribas.pizzadough"
-        minSdkVersion 30
-        targetSdkVersion 35
+        applicationId = "net.ddns.aribas.pizzadough"
+        minSdkVersion 33
+        targetSdkVersion 36
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -28,7 +28,7 @@ android {
         }
         release {
             minifyEnabled true
-            shrinkResources true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile(
                     'proguard-android-optimize.txt'),
                     'proguard-rules.pro'
@@ -38,9 +38,12 @@ android {
         buildConfig = true
     }
 
-    namespace 'com.aribasadmetlla.pizzadough'
+    namespace = 'com.aribasadmetlla.pizzadough'
 
     packagingOptions { resources.excludes.add("META-INF/*") }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+    }
 }
 
 dependencies {
