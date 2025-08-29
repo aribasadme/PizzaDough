@@ -13,7 +13,7 @@
         android:enableOnBackInvokedCallback="true"
         android:theme="@style/Theme.AppCompat"><!-- @style/AppTheme -->
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".ListSavedRecipes" />
+        <activity android:name=".ListSavedRecipesActivity" />
         <activity android:name=".ViewSavedRecipe" />
         <activity android:name=".AboutActivity" />
         <activity
