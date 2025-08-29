@@ -22,7 +22,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(@NonNull Preference preference) {
                 Log.d(LOG_TAG, "Clicked on saved recipes");
-                Intent savedRecipesListIntent = new Intent(getActivity(), ListSavedRecipes.class);
+                Intent savedRecipesListIntent = new Intent(getActivity(), ListSavedRecipesActivity.class);
                 startActivity(savedRecipesListIntent);
                 return true;
             }
