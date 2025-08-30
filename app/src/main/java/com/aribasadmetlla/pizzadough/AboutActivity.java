@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
@@ -21,6 +22,10 @@ public class AboutActivity extends AppCompatActivity {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         setContentView(R.layout.activity_about);
+
+        // Toolbar setup
+        Toolbar toolbar = findViewById(R.id.toolbar); // Use the ID from the include tag
+        setSupportActionBar(toolbar);
 
         // Handles overlap between the navigation bar and the status bar
         View rootView = findViewById(R.id.about_activity_root);
