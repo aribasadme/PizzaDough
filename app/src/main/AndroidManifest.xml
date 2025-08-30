@@ -11,14 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:enableOnBackInvokedCallback="true"
-        android:theme="@style/Theme.AppCompat"><!-- @style/AppTheme -->
+        android:theme="@style/Theme.PizzaDough"><!-- AppTheme -->
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ListSavedRecipesActivity" />
         <activity android:name=".ViewSavedRecipe" />
         <activity android:name=".AboutActivity" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
