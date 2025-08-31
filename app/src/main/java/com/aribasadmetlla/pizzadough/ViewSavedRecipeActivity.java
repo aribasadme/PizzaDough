@@ -30,26 +30,6 @@ public class ViewSavedRecipeActivity extends AppCompatActivity {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         setContentView(R.layout.activity_view_saved_recipe);
-
-        // Toolbar setup
-        Toolbar toolbar = findViewById(R.id.toolbar); // Use the ID from the include tag
-        setSupportActionBar(toolbar);
-
-        // Handles overlap between the navigation bar and the status bar
-        View rootView = findViewById(R.id.view_saved_recipe_root);
-        ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            mlp.leftMargin = insets.left;
-            mlp.rightMargin = insets.right;
-            mlp.topMargin = insets.top;
-            mlp.bottomMargin = insets.bottom;
-            v.setLayoutParams(mlp);
-
-            // Return CONSUMED if you don't want the window insets to keep passing
-            // down to descendant views.
-            return WindowInsetsCompat.CONSUMED;
-        });
         
         mTexRecipe = findViewById(R.id.loadedRecipe);
 
