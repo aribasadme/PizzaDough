@@ -4,15 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,26 +33,6 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         setContentView(R.layout.activity_list_saved_recipes);
-
-        // Toolbar setup
-        Toolbar toolbar = findViewById(R.id.toolbar); // Use the ID from the include tag
-        setSupportActionBar(toolbar);
-
-        // Handles overlap between the navigation bar and the status bar
-        View rootView = findViewById(R.id.list_saved_recipes_activity_root);
-        ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            mlp.leftMargin = insets.left;
-            mlp.rightMargin = insets.right;
-            mlp.topMargin = insets.top;
-            mlp.bottomMargin = insets.bottom;
-            v.setLayoutParams(mlp);
-
-            // Return CONSUMED if you don't want the window insets to keep passing
-            // down to descendant views.
-            return WindowInsetsCompat.CONSUMED;
-        });
 
         createItems();
         buildRecyclerView();
