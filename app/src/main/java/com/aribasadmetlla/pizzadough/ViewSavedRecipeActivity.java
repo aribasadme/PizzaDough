@@ -1,6 +1,7 @@
 package com.aribasadmetlla.pizzadough;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import java.io.InputStreamReader;
 
 
 public class ViewSavedRecipeActivity extends AppCompatActivity {
+    private static final String LOG_TAG = ViewSavedRecipeActivity.class.getSimpleName();
     private TextView mTexRecipe;
 
     @Override
@@ -71,13 +73,13 @@ public class ViewSavedRecipeActivity extends AppCompatActivity {
             }
             mTexRecipe.setText(sb.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, String.format(e.getMessage()));
         } finally {
             if (fis != null) {
                 try {
                     fis.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(LOG_TAG, String.format(e.getMessage()));
                 }
             }
         }
