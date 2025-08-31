@@ -14,7 +14,7 @@
         android:theme="@style/Theme.PizzaDough"><!-- AppTheme -->
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ListSavedRecipesActivity" />
-        <activity android:name=".ViewSavedRecipe" />
+        <activity android:name=".ViewSavedRecipeActivity" />
         <activity android:name=".AboutActivity" />
         <activity
             android:name=".MainActivity"

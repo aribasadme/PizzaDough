@@ -96,7 +96,7 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
     public void callViewRecipe(int position) {
         Bundle bundle = new Bundle();
         bundle.putString("FILE_NAME", mSavedRecipeList.get(position).getFileName());
-        Intent viewRecipeIntent = new Intent(this, ViewSavedRecipe.class);
+        Intent viewRecipeIntent = new Intent(this, ViewSavedRecipeActivity.class);
         viewRecipeIntent.putExtras(bundle);
         startActivity(viewRecipeIntent);
     }

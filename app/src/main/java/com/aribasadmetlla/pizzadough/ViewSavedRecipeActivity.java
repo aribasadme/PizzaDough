@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 
-public class ViewSavedRecipe extends AppCompatActivity {
+public class ViewSavedRecipeActivity extends AppCompatActivity {
     private TextView mTexRecipe;
 
     @Override
