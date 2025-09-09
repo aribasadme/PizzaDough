@@ -51,4 +51,6 @@
     <string name="about">About</string>
     <string name="other">Other</string>
     <string name="version_s">Version</string>
+    <string name="content_description_send">send</string>
+    <string name="content_description_delete">delete</string>
 </resources>
