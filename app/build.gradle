@@ -11,7 +11,7 @@ android {
     compileSdk = 35
     defaultConfig {
         applicationId = "net.ddns.aribas.pizzadough"
-        minSdkVersion 33
+        minSdkVersion 35
         targetSdkVersion 36
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
