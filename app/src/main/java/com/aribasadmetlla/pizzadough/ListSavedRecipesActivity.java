@@ -23,7 +23,6 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
 
     private ArrayList<SavedRecipeItem> mSavedRecipeList;
     private SavedRecipeAdapter mAdapter;
-    private String[] mMenuTitles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,22 +72,17 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        createMenuTitles();
-        mAdapter.setMenuTitles(mMenuTitles);
         mAdapter.setOnItemClickListener(new SavedRecipeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                Log.i(LOG_TAG, "Click on item " + position + " (" + mSavedRecipeList.get(position).getFileName() + ")");
                 callViewRecipe(position);
             }
-
+        });
+        mAdapter.setOnItemLongClickListener(new SavedRecipeAdapter.OnItemLongClickListener() {
             @Override
-            public void onSendClick(int position) {
-                sendFile(position);
-            }
-
-            @Override
-            public void onDeleteClick(int position) {
-                deleteFile(position);
+            public void onItemLongClick(int position) {
+                Log.i(LOG_TAG, "Long click on item " + position + " (" + mSavedRecipeList.get(position).getFileName() + ")");
             }
         });
     }
@@ -137,11 +131,5 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
             mSavedRecipeList.remove(position);
             mAdapter.notifyItemRemoved(position);
         }
-    }
-
-    public void createMenuTitles() {
-        mMenuTitles = new String[2];
-        mMenuTitles[0] = getString(R.string.send);
-        mMenuTitles[1] = getString(R.string.delete);
     }
 }
