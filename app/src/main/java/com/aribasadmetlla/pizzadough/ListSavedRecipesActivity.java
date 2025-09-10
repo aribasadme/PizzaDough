@@ -62,17 +62,17 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
                 return false;
             }
 
-            switch (item.getItemId()) {
-                case R.id.action_send_recipe:
-                    sendRecipeFile(mSelectedRecipePosition);
-                    mode.finish();
-                    return true;
-                case R.id.action_delete_recipe:
-                    deleteRecipeFile(mSelectedRecipePosition);
-                    mode.finish();
-                    return true;
-                default:
-                    return false;
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_send_recipe) {
+                sendRecipeFile(mSelectedRecipePosition);
+                mode.finish();
+                return true;
+            } else if (itemId == R.id.action_delete_recipe) {
+                deleteRecipeFile(mSelectedRecipePosition);
+                mode.finish();
+                return true;
+            } else {
+                return false;
             }
         }
 
