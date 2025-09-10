@@ -3,7 +3,7 @@ plugins {
 }
 
 def versionMajor = 2
-def versionMinor = 4
+def versionMinor = 5
 def versionPatch = 1
 def versionBuild = 0
 
