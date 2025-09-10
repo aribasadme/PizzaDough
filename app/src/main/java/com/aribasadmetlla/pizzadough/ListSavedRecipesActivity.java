@@ -135,7 +135,9 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
                 }
                 mSelectedRecipePosition = position; // Store the position
                 mActionMode = startSupportActionMode(mActionModeCallback);
-                mActionMode.setTitle(getString(R.string.contextual_one_item_selected));
+                if (mActionMode != null) {
+                    mActionMode.setTitle(getString(R.string.contextual_one_item_selected));
+                }
             }
         });
     }
