@@ -76,7 +76,7 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             if (mClickListener != null) {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    Log.d(LOG_TAG, "onClick");
+                    Log.d(LOG_TAG, "onClick triggered");
                     mClickListener.onItemClick(position);
                 }
             }
@@ -87,7 +87,7 @@ public class SavedRecipeAdapter extends RecyclerView.Adapter<SavedRecipeAdapter.
             if (mLongClickListener != null) {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    Log.d(LOG_TAG, "onLongClick");
+                    Log.d(LOG_TAG, "onLongClick triggered");
                     mLongClickListener.onItemLongClick(position);
                     return true;
                 }
