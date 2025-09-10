@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.WindowCompat;
+import androidx.appcompat.view.ActionMode;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,20 +25,63 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
 
     private ArrayList<SavedRecipeItem> mSavedRecipeList;
     private SavedRecipeAdapter mAdapter;
-    private String[] mMenuTitles;
+    private int mSelectedRecipePosition = RecyclerView.NO_POSITION; // Variable to store the position
+
+    ActionMode mActionMode = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Enable edge-to-edge display for SDK >= 29 and <= 35
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         setContentView(R.layout.activity_list_saved_recipes);
 
         createItems();
         buildRecyclerView();
     }
+
+    ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.contextual_action_bar, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            // Use the stored position
+            if (mSelectedRecipePosition == RecyclerView.NO_POSITION) {
+                // Should not happen if an item was selected, but good for safety
+                Log.e(LOG_TAG, "No position selected for action mode item click");
+                mode.finish();
+                return false;
+            }
+
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_send_recipe) {
+                sendRecipeFile(mSelectedRecipePosition);
+                mode.finish();
+                return true;
+            } else if (itemId == R.id.action_delete_recipe) {
+                deleteRecipeFile(mSelectedRecipePosition);
+                mode.finish();
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null; // Clear the action mode
+            mSelectedRecipePosition = RecyclerView.NO_POSITION; // Reset the position
+        }
+    };
 
     public void listFiles(Context context, ArrayList<File> fileList) {
         if (context.fileList().length == 0) {
@@ -53,8 +98,8 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
     }
 
     public void createItems() {
-        mSavedRecipeList = new ArrayList<SavedRecipeItem>();
-        ArrayList<File> fileList = new ArrayList<File>();
+        mSavedRecipeList = new ArrayList<>();
+        ArrayList<File> fileList = new ArrayList<>();
 
         listFiles(this, fileList);
         for (File f : fileList) {
@@ -73,22 +118,26 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        createMenuTitles();
-        mAdapter.setMenuTitles(mMenuTitles);
         mAdapter.setOnItemClickListener(new SavedRecipeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                Log.i(LOG_TAG, "Click on item " + position + " (" + mSavedRecipeList.get(position).getFileName() + ")");
                 callViewRecipe(position);
             }
-
+        });
+        mAdapter.setOnItemLongClickListener(new SavedRecipeAdapter.OnItemLongClickListener() {
             @Override
-            public void onSendClick(int position) {
-                sendFile(position);
-            }
+            public void onItemLongClick(int position) {
+                Log.i(LOG_TAG, "Long click on item " + position + " (" + mSavedRecipeList.get(position).getFileName() + ")");
 
-            @Override
-            public void onDeleteClick(int position) {
-                deleteFile(position);
+                if (mActionMode != null) {
+                    return;
+                }
+                mSelectedRecipePosition = position; // Store the position
+                mActionMode = startSupportActionMode(mActionModeCallback);
+                if (mActionMode != null) {
+                    mActionMode.setTitle(getString(R.string.contextual_one_item_selected));
+                }
             }
         });
     }
@@ -101,11 +150,10 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
         startActivity(viewRecipeIntent);
     }
 
-    public void sendFile(int position) {
+    public void sendRecipeFile(int position) {
         Intent sendIntent = new Intent();
-        FileInputStream fis = null;
-        try {
-            fis = getApplicationContext().openFileInput(mSavedRecipeList.get(position).getFileName());
+        String fileName = mSavedRecipeList.get(position).getFileName();
+        try (FileInputStream fis = getApplicationContext().openFileInput(fileName)) {
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
@@ -119,29 +167,17 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent, null));
         } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            Log.e(LOG_TAG, "Error sending recipe file: " + fileName, e);
         }
     }
 
-    public void deleteFile(int position) {
+    public void deleteRecipeFile(int position) {
         File file = new File(getFilesDir(), mSavedRecipeList.get(position).getFileName());
+        String fileName = file.getName();
         if (deleteFile(file.getName())) {
+            Log.i(LOG_TAG, "File " + fileName + " deleted");
             mSavedRecipeList.remove(position);
             mAdapter.notifyItemRemoved(position);
         }
-    }
-
-    public void createMenuTitles() {
-        mMenuTitles = new String[2];
-        mMenuTitles[0] = getString(R.string.send);
-        mMenuTitles[1] = getString(R.string.delete);
     }
 }
