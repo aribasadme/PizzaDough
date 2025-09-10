@@ -41,4 +41,7 @@
     <string name="about">Acerca de</string>
     <string name="other">Otros</string>
     <string name="version_s">Versión</string>
+    <string name="content_description_send">enviar</string>
+    <string name="content_description_delete">eliminar</string>
+    <string name="contextual_one_item_selected">1 seleccionado</string>
 </resources>

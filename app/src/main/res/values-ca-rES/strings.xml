@@ -41,4 +41,7 @@
     <string name="about">Quant a</string>
     <string name="other">Altres</string>
     <string name="version_s">Versió</string>
+    <string name="content_description_send">envia</string>
+    <string name="content_description_delete">elimina</string>
+    <string name="contextual_one_item_selected">1 seleccionat</string>
 </resources>
