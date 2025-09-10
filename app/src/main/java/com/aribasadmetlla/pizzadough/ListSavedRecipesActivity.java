@@ -152,7 +152,8 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
 
     public void sendRecipeFile(int position) {
         Intent sendIntent = new Intent();
-        try (FileInputStream fis = getApplicationContext().openFileInput(mSavedRecipeList.get(position).getFileName())) {
+        String fileName = mSavedRecipeList.get(position).getFileName();
+        try (FileInputStream fis = getApplicationContext().openFileInput(fileName)) {
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
@@ -166,7 +167,7 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
             sendIntent.setType("text/plain");
             startActivity(Intent.createChooser(sendIntent, null));
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, "Error sending recipe file: " + fileName, e);
         }
     }
 
