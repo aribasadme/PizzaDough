@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+        SplashScreen.installSplashScreen(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -519,7 +519,7 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
             billingClient.queryProductDetailsAsync(
                     queryProductDetailsParams,
                     new ProductDetailsResponseListener() {
-                        public void onProductDetailsResponse(BillingResult billingResult, QueryProductDetailsResult queryProductDetailsResult) {
+                        public void onProductDetailsResponse(@NonNull BillingResult billingResult, @NonNull QueryProductDetailsResult queryProductDetailsResult) {
                             // Process the result
                             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                                 for (ProductDetails productDetails : queryProductDetailsResult.getProductDetailsList()) {
