@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
         setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.navigationView);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_draw_open, R.string.navigation_draw_close);
@@ -484,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
         Log.i(LOG_TAG, "Starting connection to Google Play Billing service");
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
-            public void onBillingSetupFinished(BillingResult billingResult) {
+            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     Log.i(LOG_TAG, "Connected");
                     getProducts();
