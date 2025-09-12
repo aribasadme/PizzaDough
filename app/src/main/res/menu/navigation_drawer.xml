@@ -2,7 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_settings"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
@@ -16,26 +18,38 @@
             android:icon="@drawable/ic_send"
             android:title="@string/send" />
     </group>
-    <item android:title="@string/communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_rate"
-                android:icon="@drawable/ic_rate"
-                android:title="@string/rate_app" />
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_share"
-                android:title="@string/share" />
-        </menu>
-    </item>
-    <item android:title="@string/other">
-        <menu>
-            <item
-                android:id="@+id/nav_remove_ads"
-                android:title="@string/remove_adds" />
-            <item
-                android:id="@+id/nav_about"
-                android:title="@string/about" />
-        </menu>
-    </item>
+    <group
+        android:id="@+id/group_communicate"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/subtitle_communicate"
+            android:title="@string/communicate">
+            <menu>
+                <item
+                    android:id="@+id/nav_rate"
+                    android:icon="@drawable/ic_rate"
+                    android:title="@string/rate_app" />
+                <item
+                    android:id="@+id/nav_share"
+                    android:icon="@drawable/ic_share"
+                    android:title="@string/share" />
+            </menu>
+        </item>
+    </group>
+    <group
+        android:id="@+id/group_other"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/subtitle_other"
+            android:title="@string/other">
+            <menu>
+                <item
+                    android:id="@+id/nav_remove_ads"
+                    android:title="@string/remove_adds" />
+                <item
+                    android:id="@+id/nav_about"
+                    android:title="@string/about" />
+            </menu>
+        </item>
+    </group>
 </menu>
