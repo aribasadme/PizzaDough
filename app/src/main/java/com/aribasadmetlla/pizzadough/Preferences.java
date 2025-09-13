@@ -45,7 +45,6 @@ public class Preferences {
     }
 
     public int getRemoveAd() {
-        //int defaultValue = getResources().getInteger("RemoveAd");
         return sharedPref.getInt("RemoveAd", 0);
     }
 
