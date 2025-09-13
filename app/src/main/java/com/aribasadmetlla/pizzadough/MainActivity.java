@@ -126,7 +126,8 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
             String toastMessage;
             int itemId = manuItem.getItemId();
             if (itemId == R.id.nav_saved_recipes) {
-                Toast.makeText(MainActivity.this, "Call ListSavedRecipesActivity", Toast.LENGTH_SHORT).show();
+                Intent savedRecipesListIntent = new Intent(MainActivity.this, ListSavedRecipesActivity.class);
+                startActivity(savedRecipesListIntent);
             } else if (itemId == R.id.nav_rate) {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + PACKAGE_NAME)));
