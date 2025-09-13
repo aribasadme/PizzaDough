@@ -9,10 +9,12 @@
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
         <item name="colorControlNormal">@color/colorPrimary</item>
+        <!-- Drawer menu -->
+        <!--        <item name="android:windowTranslucentStatus">true</item>-->
         <!-- Contextual action bar -->
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeStyle">@style/Widget.App.ActionMode</item>
-        <item name="actionModeCloseDrawable">@drawable/ic_close_24</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_close_24dp</item>
         <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
     </style>
 </resources>
