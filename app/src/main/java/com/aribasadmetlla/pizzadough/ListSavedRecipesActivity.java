@@ -43,7 +43,7 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            mode.getMenuInflater().inflate(R.menu.contextual_action_bar, menu);
+            mode.getMenuInflater().inflate(R.menu.list_saved_recipes_contextual_action_bar, menu);
             return true;
         }
 
