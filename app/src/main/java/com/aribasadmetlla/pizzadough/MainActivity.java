@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,9 +15,7 @@ import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -44,6 +41,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.play.core.review.ReviewException;
 import com.google.android.play.core.review.ReviewInfo;
@@ -65,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
     private AdView mAdView;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    private Toolbar toolbar;
     private Preferences preferences;
     private BillingClient billingClient;
     private EditText editPortions, editWeightPortion;
@@ -83,72 +80,74 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
         setContentView(R.layout.activity_main);
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        // Set up the toolbar
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
+        topAppBar.setNavigationOnClickListener(v -> drawerLayout.open());
+        topAppBar.setOnMenuItemClickListener(item -> {
+            String toastMessage;
 
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.navigationView);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
-                R.string.navigation_draw_open, R.string.navigation_draw_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        // Set a listener for when an item in the NavigationView is selected
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            // Called when an item in the NavigationView is selected.
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                String toastMessage;
-                int itemId = item.getItemId();
-                if (itemId == R.id.nav_settings) {
-                    Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
-                    startActivity(settingsIntent);
-                } else if (itemId == R.id.nav_save) {
-                    if (portions > 0
-                            && portion_weight > 0
-                            && total_weight > 0) {
-                        openSaveFileDialog();
-                    } else {
-                        toastMessage = getString(R.string.toast_saving_warning);
-                        Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
-                    }
-                } else if (itemId == R.id.nav_rate) {
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + PACKAGE_NAME)));
-                    } catch (ActivityNotFoundException anfe) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + PACKAGE_NAME)));
-                    }
-                } else if (itemId == R.id.nav_share) {
-                    Intent shareIntent = new Intent();
-                    shareIntent.setAction(Intent.ACTION_SEND);
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=net.ddns.aribas.pizzadough");
-                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getText(R.string.app_name));
-                    shareIntent.setType("text/plain");
-                    startActivity(Intent.createChooser(shareIntent, getString(R.string.share)));
-                } else if (itemId == R.id.nav_send) {
-                    if (portions > 0
-                            && portion_weight > 0
-                            && total_weight > 0) {
-                        Intent sendIntent = new Intent();
-                        StringBuilder message = writeRecipe();
-                        sendIntent.setAction(Intent.ACTION_SEND);
-                        sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
-                        sendIntent.setType("text/plain");
-                        startActivity(Intent.createChooser(sendIntent, null));
-                    } else {
-                        toastMessage = getString(R.string.toast_send_warning);
-                        Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
-                    }
-                } else if (itemId == R.id.nav_remove_ads) {
-                    connectGooglePlayBilling();
-                } else if (itemId == R.id.nav_about) {
-                    Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
-                    startActivity(aboutIntent);
+            int itemId = item.getItemId();
+            if (itemId == R.id.save) {
+                if (portions > 0
+                        && portion_weight > 0
+                        && total_weight > 0) {
+                    openSaveFileDialog();
+                } else {
+                    toastMessage = getString(R.string.toast_saving_warning);
+                    Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
                 }
-                drawerLayout.closeDrawers();
+                return true;
+            } else if (itemId == R.id.send) {
+                if (portions > 0
+                        && portion_weight > 0
+                        && total_weight > 0) {
+                    Intent sendIntent = new Intent();
+                    StringBuilder message = writeRecipe();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
+                    sendIntent.setType("text/plain");
+                    startActivity(Intent.createChooser(sendIntent, null));
+                } else {
+                    toastMessage = getString(R.string.toast_send_warning);
+                    Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+                }
                 return true;
             }
+            return false;
+        });
+
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        navigationView = findViewById(R.id.navigationView);
+        // Set a listener for when an item in the NavigationView is selected
+        // Called when an item in the NavigationView is selected.
+        navigationView.setNavigationItemSelectedListener(manuItem -> {
+            String toastMessage;
+            int itemId = manuItem.getItemId();
+            if (itemId == R.id.nav_saved_recipes) {
+                Toast.makeText(MainActivity.this, "Call ListSavedRecipesActivity", Toast.LENGTH_SHORT).show();
+            } else if (itemId == R.id.nav_rate) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + PACKAGE_NAME)));
+                } catch (ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + PACKAGE_NAME)));
+                }
+            } else if (itemId == R.id.nav_share) {
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=net.ddns.aribas.pizzadough");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getText(R.string.app_name));
+                shareIntent.setType("text/plain");
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.share)));
+            } else if (itemId == R.id.nav_remove_ads) {
+                connectGooglePlayBilling();
+            } else if (itemId == R.id.nav_about) {
+                Intent aboutIntent = new Intent(MainActivity.this, AboutActivity.class);
+                startActivity(aboutIntent);
+            }
+            drawerLayout.close();
+            return true;
         });
 
         preferences = new Preferences(getApplicationContext());

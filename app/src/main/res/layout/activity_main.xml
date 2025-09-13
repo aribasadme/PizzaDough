@@ -8,412 +8,449 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
-    android:fitsSystemWindows="true"
     tools:context=".MainActivity"
     tools:openDrawer="start">
 
-    <ScrollView
-        android:id="@+id/scrollView"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/adView">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/AppBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:background="?attr/colorPrimary">
 
-            <include
-                android:id="@+id/toolbar"
-                layout="@layout/toolbar"/>
-
-            <TextView
-                android:id="@+id/textViewPortions"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/portions"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-            <EditText
-                android:id="@+id/editPortions"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:clickable="true"
-                android:ems="10"
-                android:hint="@string/zero_num"
-                android:inputType="number"
-                android:nextFocusForward="@+id/editWeightPortion"
-                android:textAlignment="textEnd"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewPortions"
-                android:autofillHints="" />
-
-            <TextView
-                android:id="@+id/textViewPortionWeight"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/portion_weight"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editPortions" />
-            <EditText
-                android:id="@+id/editWeightPortion"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:ems="10"
-                android:hint="@string/initial_wight_portion"
-                android:inputType="number"
-                android:textAlignment="textEnd"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewPortionWeight"
-                android:autofillHints="" />
-
-            <!-- Hydration selection -->
-            <TextView
-                android:id="@+id/hydrationTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/hydration"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editWeightPortion" />
-            <TextView
-                android:id="@+id/hydrationPercentTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/zero_num_percentage"
-                android:textAlignment="center"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/hydrationTextView" />
-            <SeekBar
-                android:id="@+id/hydrationSeekBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:max="100"
-                android:min="0"
-                android:progress="1"
-                android:progressTint="@color/colorPrimary"
-                android:thumbTint="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/hydrationPercentTextView" />
-
-            <!-- Yeast selection -->
-            <TextView
-                android:id="@+id/textViewYeast"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/yeast"
-                app:layout_constraintEnd_toStartOf="@+id/textViewSalt"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/hydrationSeekBar" />
-            <TextView
-                android:id="@+id/yeastPercentTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:ems="10"
-                android:hint="@string/zero_decimal_percentage"
-                android:textAlignment="center"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toStartOf="@+id/saltPercentTextView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewYeast" />
-            <SeekBar
-                android:id="@+id/yeastSeekBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:max="50"
-                android:min="0"
-                android:progress="1"
-                android:progressTint="@color/colorPrimary"
-                android:thumbTint="@color/colorPrimary"
-                app:layout_constraintEnd_toStartOf="@+id/saltSeekBar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/yeastPercentTextView" />
-
-            <!-- Salt selection -->
-            <TextView
-                android:id="@+id/textViewSalt"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/salt"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/textViewOil"
-                app:layout_constraintStart_toEndOf="@+id/textViewYeast"
-                app:layout_constraintTop_toBottomOf="@+id/hydrationSeekBar" />
-            <TextView
-                android:id="@+id/saltPercentTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:ems="10"
-                android:hint="@string/zero_decimal_percentage"
-                android:textAlignment="center"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toStartOf="@+id/oilPercentTextView"
-                app:layout_constraintStart_toEndOf="@+id/yeastPercentTextView"
-                app:layout_constraintTop_toBottomOf="@+id/textViewSalt" />
-            <SeekBar
-                android:id="@+id/saltSeekBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:max="50"
-                android:min="0"
-                android:progress="1"
-                android:progressTint="@color/colorPrimary"
-                android:thumbTint="@color/colorPrimary"
-                app:layout_constraintEnd_toStartOf="@+id/oilSeekBar"
-                app:layout_constraintStart_toEndOf="@+id/yeastSeekBar"
-                app:layout_constraintTop_toBottomOf="@+id/saltPercentTextView" />
-
-            <!-- Oil selection -->
-            <TextView
-                android:id="@+id/textViewOil"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/oil"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textViewSalt"
-                app:layout_constraintTop_toBottomOf="@+id/hydrationSeekBar" />
-            <TextView
-                android:id="@+id/oilPercentTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:ems="10"
-                android:hint="@string/zero_decimal_percentage"
-                android:textAlignment="center"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/saltPercentTextView"
-                app:layout_constraintTop_toBottomOf="@+id/textViewOil" />
-            <SeekBar
-                android:id="@+id/oilSeekBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:max="50"
-                android:min="0"
-                android:progress="1"
-                android:progressTint="@color/colorPrimary"
-                android:thumbTint="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/saltSeekBar"
-                app:layout_constraintTop_toBottomOf="@+id/oilPercentTextView" />
-
-            <Button
-                android:id="@+id/buttonCalculate"
-                android:layout_width="320sp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:background="@color/colorPrimary"
-                android:text="@string/calculate"
-                android:textColor="@android:color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/saltSeekBar" />
-
-            <TextView
-                android:id="@+id/textViewFlour"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/flour"
-                app:layout_constraintEnd_toStartOf="@+id/textViewWater"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonCalculate" />
-            <EditText
-                android:id="@+id/editFlour"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:ems="10"
-                android:hint="@string/zero_num"
-                android:inputType="none"
-                android:textAlignment="textEnd"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toStartOf="@+id/editWater"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewFlour"
-                android:autofillHints="Calculated flour" />
-
-            <TextView
-                android:id="@+id/textViewWater"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/water"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textViewFlour"
-                app:layout_constraintTop_toBottomOf="@+id/buttonCalculate" />
-            <EditText
-                android:id="@+id/editWater"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:ems="10"
-                android:hint="@string/zero_num"
-                android:inputType="none"
-                android:textAlignment="textEnd"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/editFlour"
-                app:layout_constraintTop_toBottomOf="@+id/textViewWater"
-                android:autofillHints="Calculated water" />
-
-            <!-- Yeast result -->
-            <TextView
-                android:id="@+id/yeastGramsTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/yeast_grams"
-                app:layout_constraintEnd_toStartOf="@+id/saltGramsTextView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editFlour" />
-            <EditText
-                android:id="@+id/editYeast"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:ems="10"
-                android:hint="@string/zero_num"
-                android:inputType="none"
-                android:textAlignment="textEnd"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toStartOf="@+id/editSalt"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/yeastGramsTextView"
-                android:autofillHints="Calculated yeast" />
-
-            <!-- Salt result -->
-            <TextView
-                android:id="@+id/saltGramsTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/salt_grams"
-                app:layout_constraintEnd_toStartOf="@+id/oilGramsTextView"
-                app:layout_constraintStart_toEndOf="@+id/yeastGramsTextView"
-                app:layout_constraintTop_toBottomOf="@+id/editFlour" />
-            <EditText
-                android:id="@+id/editSalt"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:ems="10"
-                android:hint="@string/zero_num"
-                android:inputType="none"
-                android:textAlignment="textEnd"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toStartOf="@+id/editOil"
-                app:layout_constraintHorizontal_bias="0.804"
-                app:layout_constraintStart_toEndOf="@+id/editYeast"
-                app:layout_constraintTop_toBottomOf="@+id/saltGramsTextView"
-                android:autofillHints="Calculated salt" />
-
-            <!-- Oil result -->
-            <TextView
-                android:id="@+id/oilGramsTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/oil_grams"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/saltGramsTextView"
-                app:layout_constraintTop_toBottomOf="@+id/editFlour" />
-            <EditText
-                android:id="@+id/editOil"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:ems="10"
-                android:hint="@string/zero_num"
-                android:inputType="none"
-                android:textAlignment="textEnd"
-                android:textSize="22sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/editSalt"
-                app:layout_constraintTop_toBottomOf="@+id/oilGramsTextView"
-                android:autofillHints="Calculated oil" />
-
-            <com.google.android.gms.ads.AdView
-                android:id="@+id/adView"
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                ads:adSize="SMART_BANNER"
-                ads:adUnitId="@string/banner_ad_unit_id"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editSalt"
-                app:layout_constraintVertical_bias="0.0" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+                android:layout_height="?attr/actionBarSize"
+                app:title="@string/app_name"
+                app:menu="@menu/main_top_app_bar"
+                app:navigationIcon="@drawable/ic_menu_24dp"
+                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+                android:background="@android:color/transparent"
+                android:elevation="0dp" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/adView">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/textViewPortions"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/portions"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <EditText
+                    android:id="@+id/editPortions"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:clickable="true"
+                    android:ems="10"
+                    android:hint="@string/zero_num"
+                    android:inputType="number"
+                    android:nextFocusForward="@+id/editWeightPortion"
+                    android:textAlignment="textEnd"
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewPortions"
+                    android:autofillHints="" />
+
+                <TextView
+                    android:id="@+id/textViewPortionWeight"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/portion_weight"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editPortions" />
+
+                <EditText
+                    android:id="@+id/editWeightPortion"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="@string/initial_wight_portion"
+                    android:inputType="number"
+                    android:textAlignment="textEnd"
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewPortionWeight"
+                    android:autofillHints="" />
+
+                <!-- Hydration selection -->
+                <TextView
+                    android:id="@+id/hydrationTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/hydration"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editWeightPortion" />
+
+                <TextView
+                    android:id="@+id/hydrationPercentTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/zero_num_percentage"
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/hydrationTextView" />
+
+                <SeekBar
+                    android:id="@+id/hydrationSeekBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:max="100"
+                    android:min="0"
+                    android:progress="1"
+                    android:progressTint="@color/colorPrimary"
+                    android:thumbTint="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/hydrationPercentTextView" />
+
+                <!-- Yeast selection -->
+                <TextView
+                    android:id="@+id/textViewYeast"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/yeast"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewSalt"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/hydrationSeekBar" />
+
+                <TextView
+                    android:id="@+id/yeastPercentTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="@string/zero_decimal_percentage"
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toStartOf="@+id/saltPercentTextView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewYeast" />
+
+                <SeekBar
+                    android:id="@+id/yeastSeekBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:max="50"
+                    android:min="0"
+                    android:progress="1"
+                    android:progressTint="@color/colorPrimary"
+                    android:thumbTint="@color/colorPrimary"
+                    app:layout_constraintEnd_toStartOf="@+id/saltSeekBar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/yeastPercentTextView" />
+
+                <!-- Salt selection -->
+                <TextView
+                    android:id="@+id/textViewSalt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/salt"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewOil"
+                    app:layout_constraintStart_toEndOf="@+id/textViewYeast"
+                    app:layout_constraintTop_toBottomOf="@+id/hydrationSeekBar" />
+
+                <TextView
+                    android:id="@+id/saltPercentTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="@string/zero_decimal_percentage"
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toStartOf="@+id/oilPercentTextView"
+                    app:layout_constraintStart_toEndOf="@+id/yeastPercentTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewSalt" />
+
+                <SeekBar
+                    android:id="@+id/saltSeekBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:max="50"
+                    android:min="0"
+                    android:progress="1"
+                    android:progressTint="@color/colorPrimary"
+                    android:thumbTint="@color/colorPrimary"
+                    app:layout_constraintEnd_toStartOf="@+id/oilSeekBar"
+                    app:layout_constraintStart_toEndOf="@+id/yeastSeekBar"
+                    app:layout_constraintTop_toBottomOf="@+id/saltPercentTextView" />
+
+                <!-- Oil selection -->
+                <TextView
+                    android:id="@+id/textViewOil"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/oil"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textViewSalt"
+                    app:layout_constraintTop_toBottomOf="@+id/hydrationSeekBar" />
+
+                <TextView
+                    android:id="@+id/oilPercentTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="@string/zero_decimal_percentage"
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/saltPercentTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewOil" />
+
+                <SeekBar
+                    android:id="@+id/oilSeekBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:max="50"
+                    android:min="0"
+                    android:progress="1"
+                    android:progressTint="@color/colorPrimary"
+                    android:thumbTint="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/saltSeekBar"
+                    app:layout_constraintTop_toBottomOf="@+id/oilPercentTextView" />
+
+                <Button
+                    android:id="@+id/buttonCalculate"
+                    android:layout_width="320sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/calculate"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/saltSeekBar" />
+
+                <TextView
+                    android:id="@+id/textViewFlour"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/flour"
+                    app:layout_constraintEnd_toStartOf="@+id/textViewWater"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/buttonCalculate" />
+
+                <EditText
+                    android:id="@+id/editFlour"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="@string/zero_num"
+                    android:inputType="none"
+                    android:textAlignment="textEnd"
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toStartOf="@+id/editWater"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewFlour"
+                    android:autofillHints="Calculated flour" />
+
+                <TextView
+                    android:id="@+id/textViewWater"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/water"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textViewFlour"
+                    app:layout_constraintTop_toBottomOf="@+id/buttonCalculate" />
+
+                <EditText
+                    android:id="@+id/editWater"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="@string/zero_num"
+                    android:inputType="none"
+                    android:textAlignment="textEnd"
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/editFlour"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewWater"
+                    android:autofillHints="Calculated water" />
+
+                <!-- Yeast result -->
+                <TextView
+                    android:id="@+id/yeastGramsTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/yeast_grams"
+                    app:layout_constraintEnd_toStartOf="@+id/saltGramsTextView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editFlour" />
+
+                <EditText
+                    android:id="@+id/editYeast"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="@string/zero_num"
+                    android:inputType="none"
+                    android:textAlignment="textEnd"
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toStartOf="@+id/editSalt"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/yeastGramsTextView"
+                    android:autofillHints="Calculated yeast" />
+
+                <!-- Salt result -->
+                <TextView
+                    android:id="@+id/saltGramsTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/salt_grams"
+                    app:layout_constraintEnd_toStartOf="@+id/oilGramsTextView"
+                    app:layout_constraintStart_toEndOf="@+id/yeastGramsTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/editFlour" />
+
+                <EditText
+                    android:id="@+id/editSalt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="@string/zero_num"
+                    android:inputType="none"
+                    android:textAlignment="textEnd"
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toStartOf="@+id/editOil"
+                    app:layout_constraintHorizontal_bias="0.804"
+                    app:layout_constraintStart_toEndOf="@+id/editYeast"
+                    app:layout_constraintTop_toBottomOf="@+id/saltGramsTextView"
+                    android:autofillHints="Calculated salt" />
+
+                <!-- Oil result -->
+                <TextView
+                    android:id="@+id/oilGramsTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/oil_grams"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/saltGramsTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/editFlour" />
+
+                <EditText
+                    android:id="@+id/editOil"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="@string/zero_num"
+                    android:inputType="none"
+                    android:textAlignment="textEnd"
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/editSalt"
+                    app:layout_constraintTop_toBottomOf="@+id/oilGramsTextView"
+                    android:autofillHints="Calculated oil" />
+
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    ads:adSize="SMART_BANNER"
+                    ads:adUnitId="@string/banner_ad_unit_id"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editSalt"
+                    app:layout_constraintVertical_bias="0.0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
