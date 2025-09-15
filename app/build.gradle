@@ -5,7 +5,6 @@ plugins {
 def versionMajor = 2
 def versionMinor = 5
 def versionPatch = 1
-def versionBuild = 0
 
 android {
     compileSdk = 35
@@ -13,14 +12,13 @@ android {
         applicationId = "net.ddns.aribas.pizzadough"
         minSdkVersion 35
         targetSdkVersion 36
-        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "int", "VERSION_MAJOR", "${versionMajor}"
         buildConfigField "int", "VERSION_MINOR", "${versionMinor}"
         buildConfigField "int", "VERSION_PATCH", "${versionPatch}"
-        buildConfigField "int", "VERSION_BUILD", "${versionBuild}"
     }
     buildTypes {
         debug {
