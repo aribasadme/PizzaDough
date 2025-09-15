@@ -2,16 +2,10 @@ package com.aribasadmetlla.pizzadough;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -49,9 +43,7 @@ public class ViewSavedRecipeActivity extends AppCompatActivity {
     }
 
     private void loadFile(String fileName) {
-        FileInputStream fis = null;
-        try {
-            fis = getApplicationContext().openFileInput(fileName);
+        try (FileInputStream fis = getApplicationContext().openFileInput(fileName)) {
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
@@ -62,15 +54,7 @@ public class ViewSavedRecipeActivity extends AppCompatActivity {
             }
             mTexRecipe.setText(sb.toString());
         } catch (IOException e) {
-            Log.e(LOG_TAG, String.format(e.getMessage()));
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    Log.e(LOG_TAG, String.format(e.getMessage()));
-                }
-            }
+            Log.e(LOG_TAG, "Error loading file: " + e.getMessage());
         }
     }
 }
