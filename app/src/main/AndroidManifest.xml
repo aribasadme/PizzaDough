@@ -15,11 +15,10 @@
         <activity android:name=".AboutActivity" />
         <activity
             android:name=".ListSavedRecipesActivity"
-            android:parentActivityName=".MainActivity">
-        </activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ViewSavedRecipeActivity"
-            android:parentActivityName=".ListSavedRecipesActivity"></activity>
+            android:parentActivityName=".ListSavedRecipesActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
