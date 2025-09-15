@@ -20,10 +20,9 @@ public class AboutActivity extends AppCompatActivity {
         int versionMajor = BuildConfig.VERSION_MAJOR;
         int versionMinor = BuildConfig.VERSION_MINOR;
         int versionPatch = BuildConfig.VERSION_PATCH;
-        @SuppressLint("DefaultLocale") String appVersionName = String.format("%d.%d.%d", versionMajor, versionMinor, versionPatch);
-        String versionText = getString(R.string.version_s).concat(": ");
+        @SuppressLint("DefaultLocale") String appVersionName = String.format("v%d.%d.%d", versionMajor, versionMinor, versionPatch);
 
-        TextView versionTextView = findViewById(R.id.aboutText);
-        versionTextView.setText(versionText.concat(appVersionName));
+        TextView versionTextView = findViewById(R.id.versionText);
+        versionTextView.setText(appVersionName);
     }
 }
