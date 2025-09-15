@@ -123,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
         // Set a listener for when an item in the NavigationView is selected
         // Called when an item in the NavigationView is selected.
         navigationView.setNavigationItemSelectedListener(manuItem -> {
-            String toastMessage;
             int itemId = manuItem.getItemId();
             if (itemId == R.id.nav_saved_recipes) {
                 Intent savedRecipesListIntent = new Intent(MainActivity.this, ListSavedRecipesActivity.class);
@@ -152,7 +151,6 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
         });
 
         preferences = new Preferences(getApplicationContext());
-
         if (preferences.getRemoveAd() == 0) {
             buildAdView();
         }
