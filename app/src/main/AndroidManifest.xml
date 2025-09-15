@@ -16,11 +16,10 @@
         <activity
             android:name=".ListSavedRecipesActivity"
             android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
         </activity>
-        <activity android:name=".ViewSavedRecipeActivity" />
+        <activity
+            android:name=".ViewSavedRecipeActivity"
+            android:parentActivityName=".ListSavedRecipesActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
