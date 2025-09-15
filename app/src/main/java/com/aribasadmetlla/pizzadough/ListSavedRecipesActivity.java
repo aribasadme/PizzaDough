@@ -12,6 +12,8 @@ import androidx.appcompat.view.ActionMode;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,6 +37,13 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_list_saved_recipes);
 
+        // Set up the toolbar and add the back button.
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
+        setSupportActionBar(topAppBar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         createItems();
         buildRecyclerView();
     }
@@ -43,7 +52,7 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            mode.getMenuInflater().inflate(R.menu.contextual_action_bar, menu);
+            mode.getMenuInflater().inflate(R.menu.list_saved_recipes_contextual_action_bar, menu);
             return true;
         }
 

@@ -3,4 +3,5 @@
     <color name="colorPrimary">#A62C2C</color>
     <color name="colorPrimaryDark">#A62C2C</color>
     <color name="colorAccent">#A62C2C</color>
+    <color name="developerLinkColor">@color/colorPrimary</color>
 </resources>

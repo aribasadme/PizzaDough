@@ -12,10 +12,13 @@
         android:supportsRtl="true"
         android:enableOnBackInvokedCallback="true"
         android:theme="@style/Theme.PizzaDough"><!-- AppTheme -->
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".ListSavedRecipesActivity" />
-        <activity android:name=".ViewSavedRecipeActivity" />
         <activity android:name=".AboutActivity" />
+        <activity
+            android:name=".ListSavedRecipesActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ViewSavedRecipeActivity"
+            android:parentActivityName=".ListSavedRecipesActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
