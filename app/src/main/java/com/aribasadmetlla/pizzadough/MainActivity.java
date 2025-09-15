@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
     public static String PACKAGE_NAME;
     private AdView mAdView;
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
     private Preferences preferences;
     private BillingClient billingClient;
     private EditText editPortions, editWeightPortion;
@@ -119,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
-        navigationView = findViewById(R.id.navigationView);
+        NavigationView navigationView = findViewById(R.id.navigationView);
         // Set a listener for when an item in the NavigationView is selected
         // Called when an item in the NavigationView is selected.
         navigationView.setNavigationItemSelectedListener(manuItem -> {
