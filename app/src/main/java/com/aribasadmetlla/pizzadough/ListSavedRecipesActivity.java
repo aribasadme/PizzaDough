@@ -26,7 +26,6 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
     private static final String LOG_TAG = ListSavedRecipesActivity.class.getSimpleName();
 
     private ArrayList<SavedRecipeItem> mSavedRecipeList;
-    private MaterialToolbar topAppBar;
     private SavedRecipeAdapter mAdapter;
     private int mSelectedRecipePosition = RecyclerView.NO_POSITION; // Variable to store the position
 
@@ -39,7 +38,7 @@ public class ListSavedRecipesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_saved_recipes);
 
         // Set up the toolbar and add the back button.
-        topAppBar = findViewById(R.id.topAppBar);
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
         setSupportActionBar(topAppBar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
