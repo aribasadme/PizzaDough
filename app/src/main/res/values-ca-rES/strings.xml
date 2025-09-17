@@ -44,4 +44,5 @@
     <string name="content_description_send">envia</string>
     <string name="content_description_delete">elimina</string>
     <string name="contextual_one_item_selected">1 seleccionat</string>
+    <string name="toast_portions_warning">El numero de pizzes o el pes no poden ser zero</string>
 </resources>

@@ -59,4 +59,5 @@
     <string name="version_n" translatable="false">v1.2.3</string>
     <string name="developer_name" translatable="false">Albert Ribas Admetlla</string>
     <string name="developer_website" translatable="false">www.aribasadmetlla.com</string>
+    <string name="toast_portions_warning">Number of portions or portion weight can\'t be zero</string>
 </resources>
