@@ -36,7 +36,6 @@ public class SaveFileDialog extends AppCompatDialogFragment {
                 })
                 .setPositiveButton(getText(R.string.save), (dialog, which) -> {
                     if (fileNameEditText.getText().toString().trim().isEmpty()) {
-                        listener.saveFile(null);
                         String toastMessage = getString(R.string.toast_file_name_empty);
                         Toast.makeText(requireActivity(), toastMessage, Toast.LENGTH_SHORT).show();
                         return;
