@@ -45,4 +45,5 @@
     <string name="content_description_delete">elimina</string>
     <string name="contextual_one_item_selected">1 selezionato</string>
     <string name="toast_portions_warning">Il número di panetti o il peso non possono essere zero</string>
+    <string name="toast_file_name_empty">Il nome del file non può essere vuoto</string>
 </resources>

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,7 +41,13 @@ public class SaveFileDialog extends AppCompatDialogFragment {
                 .setPositiveButton(getText(R.string.save), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String fileName = fileNameEditText.getText().toString();
+                        if (fileNameEditText.getText().toString().trim().isEmpty()) {
+                            listener.saveFile(null);
+                            String toastMessage = getString(R.string.toast_file_name_empty);
+                            Toast.makeText(requireActivity(), toastMessage, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        String fileName = fileNameEditText.getText().toString().trim();
                         String filePath = requireActivity().getFilesDir() +
                                 "/" +
                                 fileName.trim() +

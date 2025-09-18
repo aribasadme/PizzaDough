@@ -45,4 +45,5 @@
     <string name="content_description_delete">eliminar</string>
     <string name="contextual_one_item_selected">1 seleccionado</string>
     <string name="toast_portions_warning">El número de pizzas o el peso no pueden ser cero</string>
+    <string name="toast_file_name_empty">File name can\'t be empty</string>
 </resources>
