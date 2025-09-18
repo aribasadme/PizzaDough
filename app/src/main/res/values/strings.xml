@@ -60,5 +60,5 @@
     <string name="developer_name" translatable="false">Albert Ribas Admetlla</string>
     <string name="developer_website" translatable="false">www.aribasadmetlla.com</string>
     <string name="toast_portions_warning">Number of portions or portion weight can\'t be zero</string>
-    <string name="toast_file_name_empty">El nombre del archivo no puede estar vacío</string>
+    <string name="toast_file_name_empty">File name can\'t be empty</string>
 </resources>
