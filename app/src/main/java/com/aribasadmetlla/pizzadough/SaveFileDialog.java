@@ -2,7 +2,6 @@ package com.aribasadmetlla.pizzadough;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,29 +31,23 @@ public class SaveFileDialog extends AppCompatDialogFragment {
 
         builder.setView(view)
                 .setTitle(getText(R.string.save_recipe))
-                .setNegativeButton(getText(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
+                .setNegativeButton(getText(R.string.cancel), (dialog, which) -> {
+                    // User cancelled the dialog
                 })
-                .setPositiveButton(getText(R.string.save), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (fileNameEditText.getText().toString().trim().isEmpty()) {
-                            listener.saveFile(null);
-                            String toastMessage = getString(R.string.toast_file_name_empty);
-                            Toast.makeText(requireActivity(), toastMessage, Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        String fileName = fileNameEditText.getText().toString().trim();
-                        String filePath = requireActivity().getFilesDir() +
-                                "/" +
-                                fileName.trim() +
-                                ".txt";
-                        File file = new File(filePath);
-                        listener.saveFile(file);
+                .setPositiveButton(getText(R.string.save), (dialog, which) -> {
+                    if (fileNameEditText.getText().toString().trim().isEmpty()) {
+                        listener.saveFile(null);
+                        String toastMessage = getString(R.string.toast_file_name_empty);
+                        Toast.makeText(requireActivity(), toastMessage, Toast.LENGTH_SHORT).show();
+                        return;
                     }
+                    String fileName = fileNameEditText.getText().toString().trim();
+                    String filePath = requireActivity().getFilesDir() +
+                            "/" +
+                            fileName.trim() +
+                            ".txt";
+                    File file = new File(filePath);
+                    listener.saveFile(file);
                 });
 
         return builder.create();
