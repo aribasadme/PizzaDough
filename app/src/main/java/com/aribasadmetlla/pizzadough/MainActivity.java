@@ -203,6 +203,9 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
         // Disabling Inputs
         disableInputs();
 
+        // Set default values
+        editWeightPortion.setText(String.valueOf(280)); // standard weight for a single dough ball
+
         /* HYDRATION SEEK BAR */
         // Sets default
         hydrationSeekBar.setProgress(hydration);
@@ -308,12 +311,17 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
 
             @Override
             public void onClick(View v) {
-                //int portions, portion_weight, total_weight;
                 float flour, water, yeast_per, salt_per, oil_per;
                 float yeast, salt, oil;
+                String toastMessage;
 
                 portions = (editPortions.getText().toString().isEmpty()) ? 0 : Integer.parseInt(editPortions.getText().toString());
-                portion_weight = (editWeightPortion.getText().toString().isEmpty()) ? 280 : Integer.parseInt(editWeightPortion.getText().toString());
+                portion_weight = (editWeightPortion.getText().toString().isEmpty()) ? 0 : Integer.parseInt(editWeightPortion.getText().toString());
+                if (portions <= 0 || portion_weight <= 0) {
+                    toastMessage = getString(R.string.toast_portions_warning);
+                    Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 yeast_per = getConvertedValue(yeastSB);
                 salt_per = getConvertedValue(saltSB);
@@ -339,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
 
                     Log.i(LOG_TAG, "Flour: " + flour + " | Water: " + water + " | Yeast: " + yeast + " | Salt: " + salt + " | Oil: " + oil);
                 } else {
-                    String toastMessage = getString(R.string.toast_hydration_warning);
+                    toastMessage = getString(R.string.toast_hydration_warning);
                     Toast.makeText(MainActivity.this, toastMessage,
                             Toast.LENGTH_LONG).show();
                 }
