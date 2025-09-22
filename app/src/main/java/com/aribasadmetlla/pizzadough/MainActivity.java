@@ -196,11 +196,17 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
         TextView hydrationPlusTextView = findViewById(R.id.hydrationPlusTextView);
         SeekBar hydrationSeekBar = findViewById(R.id.hydrationSeekBar);
         yeastPercentTextView = findViewById(R.id.yeastPercentTextView);
+        TextView yeastMinusTextView = findViewById(R.id.yeastMinusTextView);
+        TextView yeastPlusTextView = findViewById(R.id.yeastPlusTextView);
         SeekBar yeastSeekBar = findViewById(R.id.yeastSeekBar);
-        SeekBar saltSeekBar = findViewById(R.id.saltSeekBar);
         saltPercentTextView = findViewById(R.id.saltPercentTextView);
-        SeekBar oilSeekBar = findViewById(R.id.oilSeekBar);
+        TextView saltMinusTextView = findViewById(R.id.saltMinusTextView);
+        TextView saltPlusTextView = findViewById(R.id.saltPlusTextView);
+        SeekBar saltSeekBar = findViewById(R.id.saltSeekBar);
         oilPercentTextView = findViewById(R.id.oilPercentTextView);
+        TextView oilMinusTextView = findViewById(R.id.oilMinusTextView);
+        TextView oilPlusTextView = findViewById(R.id.oilPlusTextView);
+        SeekBar oilSeekBar = findViewById(R.id.oilSeekBar);
 
         // Disabling Inputs
         disableInputs();
@@ -213,6 +219,7 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
             if (hydration > 0) {
                 hydration--;
                 hydrationPercentTextView.setText(String.format(Locale.getDefault(), "%d%%", hydration));
+                hydrationSeekBar.setProgress(hydration);
                 Log.i(LOG_TAG, "Hydration set to " + hydration);
             }
         });
@@ -220,6 +227,7 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
             if (hydration < 100) {
                 hydration++;
                 hydrationPercentTextView.setText(String.format(Locale.getDefault(), "%d%%", hydration));
+                hydrationSeekBar.setProgress(hydration);
                 Log.i(LOG_TAG, "Hydration set to " + hydration);
             }
         });
@@ -247,6 +255,24 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
             }
         });
 
+        /* YEAST PLUS AND MINUS CLICKABLE */
+        yeastMinusTextView.setOnClickListener(v -> {
+            if (yeastSB > 0) {
+                yeastSB--;
+                yeastPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(yeastSB)));
+                yeastSeekBar.setProgress(yeastSB);
+                Log.i(LOG_TAG, "Yeast set to " + yeastSB);
+            }
+        });
+        yeastPlusTextView.setOnClickListener(v -> {
+            if (yeastSB < 50) {
+                yeastSB++;
+                yeastPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(yeastSB)));
+                yeastSeekBar.setProgress(yeastSB);
+                Log.i(LOG_TAG, "Yeast set to " + yeastSB);
+            }
+        });
+
         /* YEAST SEEK BAR */
         // Sets default
         yeastSeekBar.setProgress(yeastSB);
@@ -266,9 +292,25 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                String toastMessage = getString(R.string.toast_yeast_is, getConvertedValue(yeastSB));
-                Toast.makeText(MainActivity.this, toastMessage,
-                        Toast.LENGTH_SHORT).show();
+                Log.i(LOG_TAG, "Yeast set to " + yeastSB);
+            }
+        });
+
+        /* SALT PLUS AND MINUS CLICKABLE */
+        saltMinusTextView.setOnClickListener(v -> {
+            if (saltSB > 0) {
+                saltSB--;
+                saltPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(saltSB)));
+                saltSeekBar.setProgress(saltSB);
+                Log.i(LOG_TAG, "Salt set to " + saltSB);
+            }
+        });
+        saltPlusTextView.setOnClickListener(v -> {
+            if (saltSB < 50) {
+                saltSB++;
+                saltPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(saltSB)));
+                saltSeekBar.setProgress(saltSB);
+                Log.i(LOG_TAG, "Salt set to " + saltSB);
             }
         });
 
@@ -291,9 +333,41 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                String toastMessage = getString(R.string.toast_salt_is, getConvertedValue(saltSB));
-                Toast.makeText(MainActivity.this, toastMessage,
-                        Toast.LENGTH_SHORT).show();
+                Log.i(LOG_TAG, "Salt set to " + saltSB);
+            }
+        });
+
+        /* OIL PLUS AND MINUS CLICKABLE */
+        oilMinusTextView.setOnClickListener(v -> {
+            if (oilSB > 0) {
+                oilSB--;
+                oilPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(oilSB)));
+                oilSeekBar.setProgress(oilSB);
+                Log.i(LOG_TAG, "Oil set to " + oilSB);
+            }
+        });
+        oilPlusTextView.setOnClickListener(v -> {
+            if (oilSB < 50) {
+                oilSB++;
+                oilPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(oilSB)));
+                oilSeekBar.setProgress(oilSB);
+                Log.i(LOG_TAG, "Oil set to " + oilSB);
+            }
+        });
+
+        /* SALT PLUS AND MINUS CLICKABLE */
+        saltMinusTextView.setOnClickListener(v -> {
+            if (saltSB > 0) {
+                saltSB--;
+                saltPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(saltSB)));
+                saltSeekBar.setProgress(saltSB);
+            }
+        });
+        saltPlusTextView.setOnClickListener(v -> {
+            if (saltSB < 50) {
+                saltSB++;
+                saltPercentTextView.setText(String.format(Locale.getDefault(), "%.1f%%", getConvertedValue(saltSB)));
+                saltSeekBar.setProgress(saltSB);
             }
         });
 
@@ -316,9 +390,7 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                String toastMessage = getString(R.string.toast_oil_is, getConvertedValue(oilSB));
-                Toast.makeText(MainActivity.this, toastMessage,
-                        Toast.LENGTH_SHORT).show();
+                Log.i(LOG_TAG, "Oil set to " + oilSB);
             }
         });
 
