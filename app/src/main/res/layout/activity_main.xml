@@ -44,7 +44,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp">
 
                 <TextView
                     android:id="@+id/textViewPortions"
@@ -111,7 +112,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
                     android:text="@string/hydration"
                     app:layout_constraintStart_toStartOf="parent"
@@ -133,7 +134,8 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/hydrationPercentTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/hydrationTextView" />
+                    app:layout_constraintTop_toBottomOf="@+id/hydrationTextView"
+                    app:layout_constraintHorizontal_weight="1" />
 
                 <TextView
                     android:id="@+id/hydrationPercentTextView"
@@ -147,7 +149,9 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/hydrationMinusTextView"
                     app:layout_constraintEnd_toStartOf="@+id/hydrationPlusTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/hydrationTextView" />
+                    app:layout_constraintTop_toBottomOf="@+id/hydrationTextView"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/hydrationMinusTextView"
+                    app:layout_constraintHorizontal_weight="2" />
 
                 <TextView
                     android:id="@+id/hydrationPlusTextView"
@@ -164,13 +168,16 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/hydrationPercentTextView"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/hydrationTextView" />
+                    app:layout_constraintTop_toBottomOf="@+id/hydrationTextView"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/hydrationMinusTextView"
+                    app:layout_constraintHorizontal_weight="1" />
 
                 <SeekBar
                     android:id="@+id/hydrationSeekBar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:max="100"
                     android:min="0"
@@ -188,12 +195,29 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
                     android:text="@string/yeast"
-                    app:layout_constraintEnd_toStartOf="@+id/textViewSalt"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/hydrationSeekBar" />
+
+                <TextView
+                    android:id="@+id/yeastMinusTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/minus_sign"
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/yeastPercentTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewYeast"
+                    app:layout_constraintHorizontal_weight="1" />
 
                 <TextView
                     android:id="@+id/yeastPercentTextView"
@@ -201,26 +225,46 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:ems="10"
                     android:hint="@string/zero_decimal_percentage"
                     android:textAlignment="center"
                     android:textSize="22sp"
-                    app:layout_constraintEnd_toStartOf="@+id/saltPercentTextView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewYeast" />
+                    app:layout_constraintStart_toEndOf="@+id/yeastMinusTextView"
+                    app:layout_constraintEnd_toStartOf="@+id/yeastPlusTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewYeast"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/yeastMinusTextView"
+                    app:layout_constraintHorizontal_weight="2" />
+
+                <TextView
+                    android:id="@+id/yeastPlusTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/plus_sign"
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    app:layout_constraintStart_toEndOf="@+id/yeastPercentTextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewYeast"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/yeastMinusTextView"
+                    app:layout_constraintHorizontal_weight="1" />
 
                 <SeekBar
                     android:id="@+id/yeastSeekBar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:max="50"
                     android:min="0"
                     android:progress="1"
                     android:progressTint="@color/colorPrimary"
                     android:thumbTint="@color/colorPrimary"
-                    app:layout_constraintEnd_toStartOf="@+id/saltSeekBar"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/yeastPercentTextView" />
 
@@ -230,13 +274,30 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
                     android:text="@string/salt"
                     android:textSize="14sp"
-                    app:layout_constraintEnd_toStartOf="@+id/textViewOil"
-                    app:layout_constraintStart_toEndOf="@+id/textViewYeast"
-                    app:layout_constraintTop_toBottomOf="@+id/hydrationSeekBar" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/yeastSeekBar" />
+
+                <TextView
+                    android:id="@+id/saltMinusTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/minus_sign"
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/saltPercentTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewSalt"
+                    app:layout_constraintHorizontal_weight="1" />
 
                 <TextView
                     android:id="@+id/saltPercentTextView"
@@ -244,27 +305,47 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:ems="10"
                     android:hint="@string/zero_decimal_percentage"
                     android:textAlignment="center"
                     android:textSize="22sp"
-                    app:layout_constraintEnd_toStartOf="@+id/oilPercentTextView"
-                    app:layout_constraintStart_toEndOf="@+id/yeastPercentTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewSalt" />
+                    app:layout_constraintStart_toEndOf="@+id/saltMinusTextView"
+                    app:layout_constraintEnd_toStartOf="@+id/saltPlusTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewSalt"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/saltMinusTextView"
+                    app:layout_constraintHorizontal_weight="2" />
+
+                <TextView
+                    android:id="@+id/saltPlusTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/plus_sign"
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    app:layout_constraintStart_toEndOf="@+id/saltPercentTextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewSalt"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/saltMinusTextView"
+                    app:layout_constraintHorizontal_weight="1" />
 
                 <SeekBar
                     android:id="@+id/saltSeekBar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:max="50"
                     android:min="0"
                     android:progress="1"
                     android:progressTint="@color/colorPrimary"
                     android:thumbTint="@color/colorPrimary"
-                    app:layout_constraintEnd_toStartOf="@+id/oilSeekBar"
-                    app:layout_constraintStart_toEndOf="@+id/yeastSeekBar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/saltPercentTextView" />
 
                 <!-- Oil selection -->
@@ -273,12 +354,29 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
                     android:text="@string/oil"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textViewSalt"
-                    app:layout_constraintTop_toBottomOf="@+id/hydrationSeekBar" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/saltSeekBar" />
+
+                <TextView
+                    android:id="@+id/oilMinusTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/minus_sign"
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/oilPercentTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewOil"
+                    app:layout_constraintHorizontal_weight="1" />
 
                 <TextView
                     android:id="@+id/oilPercentTextView"
@@ -286,19 +384,39 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:ems="10"
                     android:hint="@string/zero_decimal_percentage"
                     android:textAlignment="center"
                     android:textSize="22sp"
+                    app:layout_constraintStart_toEndOf="@+id/oilMinusTextView"
+                    app:layout_constraintEnd_toStartOf="@+id/oilPlusTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewOil"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/oilMinusTextView"
+                    app:layout_constraintHorizontal_weight="2" />
+
+                <TextView
+                    android:id="@+id/oilPlusTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/plus_sign"
+                    android:textAlignment="center"
+                    android:textSize="22sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    app:layout_constraintStart_toEndOf="@+id/oilPercentTextView"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/saltPercentTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewOil" />
+                    app:layout_constraintTop_toBottomOf="@+id/textViewOil"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/oilMinusTextView"
+                    app:layout_constraintHorizontal_weight="1" />
 
                 <SeekBar
                     android:id="@+id/oilSeekBar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:max="50"
                     android:min="0"
@@ -306,21 +424,21 @@
                     android:progressTint="@color/colorPrimary"
                     android:thumbTint="@color/colorPrimary"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/saltSeekBar"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/oilPercentTextView" />
 
                 <Button
                     android:id="@+id/buttonCalculate"
                     android:layout_width="320sp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:layout_marginBottom="16dp"
                     android:background="@color/colorPrimary"
                     android:text="@string/calculate"
                     android:textColor="@android:color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/saltSeekBar" />
+                    app:layout_constraintTop_toBottomOf="@+id/oilSeekBar" />
 
                 <TextView
                     android:id="@+id/textViewFlour"
@@ -470,7 +588,7 @@
                     android:id="@+id/adView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     ads:adSize="SMART_BANNER"
                     ads:adUnitId="@string/banner_ad_unit_id"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -478,7 +596,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/editSalt"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintVertical_bias="0.0" /> <!-- Check this constraint - should be below editOil or other relevant views -->
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
