@@ -23,7 +23,6 @@
     <string name="calculate">CALCULATE</string>
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-1453187186238733/1858985384</string>
     <string name="toast_hydration_warning">Hydration must be greater than 0</string>
-    <string name="toast_hydration_is">Hydration is : %d%%</string>
     <string name="toast_yeast_is">Yeast is : %.1f%%</string>
     <string name="toast_salt_is">Salt is : %.1f%%</string>
     <string name="toast_oil_is">Oil is : %.1f%%</string>
@@ -61,4 +60,6 @@
     <string name="developer_website" translatable="false">www.aribasadmetlla.com</string>
     <string name="toast_portions_warning">Number of portions or portion weight can\'t be zero</string>
     <string name="toast_file_name_empty">File name can\'t be empty</string>
+    <string name="minus_sign" translatable="false">-</string>
+    <string name="plus_sign" translatable="false">+</string>
 </resources>

@@ -13,7 +13,6 @@
     <string name="yeast_grams">Levadura (gr)</string>
     <string name="salt_grams">Sal (gr)</string>
     <string name="oil_grams">Aceite (gr)</string>
-    <string name="toast_hydration_is">Hidratación al : %d%%</string>
     <string name="toast_yeast_is">Levadura al : %.1f%%</string>
     <string name="toast_salt_is">Sal al : %.1f%%</string>
     <string name="toast_oil_is">Aceite al : %.1f%%</string>

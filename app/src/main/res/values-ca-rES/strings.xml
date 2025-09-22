@@ -14,7 +14,6 @@
     <string name="yeast">Llevat</string>
     <string name="yeast_grams">Llevat (gr)</string>
     <string name="toast_hydration_warning">La hidratació ha de ser superior a 0</string>
-    <string name="toast_hydration_is">Hidratació al : %d%%</string>
     <string name="toast_yeast_is">Llevat al : %.1f%%</string>
     <string name="toast_salt_is">Sal al : %.1f%%</string>
     <string name="toast_oil_is">Oli al : %.1f%%</string>

@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
     private EditText editPortions, editWeightPortion;
     private EditText editFlour, editWater, editYeast, editSalt, editOil;
     private TextView hydrationPercentTextView, yeastPercentTextView, saltPercentTextView, oilPercentTextView;
+    private TextView hydrationMinusTextView, hydrationPlusTextView;
 
     private int portions = 0, portion_weight = 0, total_weight = 0;
     private int hydration = 65, yeastSB = 10, saltSB = 25, oilSB = 30;
@@ -192,6 +193,8 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
         editOil = findViewById(R.id.editOil);
 
         hydrationPercentTextView = findViewById(R.id.hydrationPercentTextView);
+        hydrationMinusTextView = findViewById(R.id.hydrationMinusTextView);
+        hydrationPlusTextView = findViewById(R.id.hydrationPlusTextView);
         SeekBar hydrationSeekBar = findViewById(R.id.hydrationSeekBar);
         yeastPercentTextView = findViewById(R.id.yeastPercentTextView);
         SeekBar yeastSeekBar = findViewById(R.id.yeastSeekBar);
@@ -205,6 +208,22 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
 
         // Set default values
         editWeightPortion.setText(String.valueOf(280)); // standard weight for a single dough ball
+
+        /* HYDRATION PLUS AND MINUS CLICKABLE */
+        hydrationMinusTextView.setOnClickListener(v -> {
+            if (hydration > 0) {
+                hydration--;
+                hydrationPercentTextView.setText(String.format(Locale.getDefault(), "%d%%", hydration));
+                Log.i(LOG_TAG, "Hydration set to " + hydration);
+            }
+        });
+        hydrationPlusTextView.setOnClickListener(v -> {
+            if (hydration < 100) {
+                hydration++;
+                hydrationPercentTextView.setText(String.format(Locale.getDefault(), "%d%%", hydration));
+                Log.i(LOG_TAG, "Hydration set to " + hydration);
+            }
+        });
 
         /* HYDRATION SEEK BAR */
         // Sets default
@@ -225,9 +244,7 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                String toastMessage = getString(R.string.toast_hydration_is, hydration);
-                Toast.makeText(MainActivity.this, toastMessage,
-                        Toast.LENGTH_SHORT).show();
+                Log.i(LOG_TAG, "Hydration set to " + hydration);
             }
         });
 
