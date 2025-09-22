@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
     private EditText editPortions, editWeightPortion;
     private EditText editFlour, editWater, editYeast, editSalt, editOil;
     private TextView hydrationPercentTextView, yeastPercentTextView, saltPercentTextView, oilPercentTextView;
-    private TextView hydrationMinusTextView, hydrationPlusTextView;
 
     private int portions = 0, portion_weight = 0, total_weight = 0;
     private int hydration = 65, yeastSB = 10, saltSB = 25, oilSB = 30;
@@ -193,8 +192,8 @@ public class MainActivity extends AppCompatActivity implements SaveFileDialog.Sa
         editOil = findViewById(R.id.editOil);
 
         hydrationPercentTextView = findViewById(R.id.hydrationPercentTextView);
-        hydrationMinusTextView = findViewById(R.id.hydrationMinusTextView);
-        hydrationPlusTextView = findViewById(R.id.hydrationPlusTextView);
+        TextView hydrationMinusTextView = findViewById(R.id.hydrationMinusTextView);
+        TextView hydrationPlusTextView = findViewById(R.id.hydrationPlusTextView);
         SeekBar hydrationSeekBar = findViewById(R.id.hydrationSeekBar);
         yeastPercentTextView = findViewById(R.id.yeastPercentTextView);
         SeekBar yeastSeekBar = findViewById(R.id.yeastSeekBar);
